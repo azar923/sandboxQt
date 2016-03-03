@@ -47,9 +47,6 @@ Sandbox::Sandbox(QWidget *parent) :
     ui->minHeightValue->setText(QString::number(ui->minHeight->value()));
     ui->maxHeightValue->setText(QString::number(ui->maxHeight->value()));
 
-
-
-
     connect(ui->direction_Z, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionZ(int)));
     connect(ui->direction_Y, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionY(int)));
     connect(ui->direction_X, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionX(int)));
