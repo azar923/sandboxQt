@@ -27,8 +27,7 @@ SOURCES += main.cpp\
     terrain.cpp \
     texture.cpp \
     texture2D.cpp \
-    texture3D.cpp \
-    dialog.cpp
+    texture3D.cpp
 
 HEADERS  += sandbox.h \
     sandboxwidget.h \
@@ -45,11 +44,9 @@ HEADERS  += sandbox.h \
     terrain.h \
     texture.h \
     texture2D.h \
-    texture3D.h \
-    dialog.h
+    texture3D.h
 
-FORMS    += sandbox.ui \
-    dialog.ui
+FORMS    += sandbox.ui
 
 LIBS += -lGL -lGLEW -lglut
 

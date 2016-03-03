@@ -3,6 +3,7 @@
 
 #include "camera.h"
 
+
 const static float STEP_SCALE = 1.0f;
 const static int MARGIN = 10;
 
@@ -32,6 +33,12 @@ Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vec
     m_up.Normalize();
 
     Init();
+}
+
+void Camera::setWindowSize(int WIDTH, int HEIGHT)
+{
+    m_windowWidth = WIDTH;
+    m_windowHeight = HEIGHT;
 }
 
 
@@ -91,13 +98,49 @@ void Camera::Init()
 }
 
 
-bool Camera::OnKeyboard(int Key)
+bool Camera::OnKeyboard(QKeyEvent* event)
 {
     bool Ret = false;
 
+    switch (event->key()) {
 
+    case Qt::Key_Up:
+        {
+            m_pos += (m_target * STEP_SCALE);
+            Ret = true;
+        }
+        break;
+
+    case Qt::Key_Down:
+        {
+            m_pos -= (m_target * STEP_SCALE);
+            Ret = true;
+        }
+        break;
+
+    case Qt::Key_Left:
+        {
+            Vector3f Left = m_target.Cross(m_up);
+            Left.Normalize();
+            Left *= STEP_SCALE;
+            m_pos += Left;
+            Ret = true;
+        }
+        break;
+
+    case Qt::Key_Right:
+        {
+            Vector3f Right = m_up.Cross(m_target);
+            Right.Normalize();
+            Right *= STEP_SCALE;
+            m_pos += Right;
+            Ret = true;
+        }
+        break;
+    }
 
     return Ret;
+
 }
 
 

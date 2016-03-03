@@ -32,7 +32,6 @@ Terrain::Terrain(const int _width, const int _height, int _offsetLeft, int _offs
     {
         cout << "Kinect was not initialized" << endl;
         stream = new Filestream("/home/maxim/sandbox_mat/map.raw", width, height, offsetLeft, offsetRight, offsetTop, offsetBottom);
-
     }
 
     width  -= (offsetLeft +   offsetRight);
@@ -77,7 +76,7 @@ void Terrain::setHeight(unsigned char* data)
         {
             int idx = i * width + j;
 
-            Vertices_terrain[idx].pos.z =  1.0 - data[idx] / 255.0 - 0.37;
+            Vertices_terrain[idx].pos.z =  1.0 - data[idx] / 255.0 -0.37 ;
         }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);

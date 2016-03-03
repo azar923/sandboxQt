@@ -24,6 +24,7 @@ public:
     void setHeight(unsigned char* data);
     void setHeight(int value);
     void setSandboxMode();
+    DataStream* stream;
 
 private:
 
@@ -58,7 +59,7 @@ private:
     GLuint waterLocation;
     GLuint reflectionLocation;
 
-    DataStream* stream;
+
 
     float* particles;
     int* phases;

@@ -3,7 +3,7 @@
 
 #include "math_3d.h"
 
-
+#include <QKeyEvent>
 class Camera
 {
 public:
@@ -12,7 +12,7 @@ public:
 
     Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(QKeyEvent* event);
 
     void OnMouse(int x, int y);
 
@@ -32,6 +32,8 @@ public:
     {
         return m_up;
     }
+
+    void setWindowSize(int WIDTH, int HEIGHT);
 
 	void SetPos( const float& x, const float& y, const float& z )
 	{

@@ -18,6 +18,8 @@ public:
     unsigned char* getData();
     bool initialize();
     static bool isSensorConnected();
+    void setMaxDepth(int maxDepth);
+    void setMinDepth(int minDepth);
 private:
 
     openni::Status rc_depth ;

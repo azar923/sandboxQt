@@ -5,7 +5,9 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 #include "scene.h"
-
+#include <QTimer>
+#include <QMouseEvent>
+#include <QKeyEvent>
 class SandboxWidget : public QGLWidget, public QOpenGLFunctions
 {
     Q_OBJECT
@@ -17,6 +19,12 @@ public:
     void paintGL();
 
     Scene* scene;
+
+
+    void mouseMoveEvent(QMouseEvent* event); Q_DECL_OVERRIDE
+    void keyPressEvent(QKeyEvent* event); Q_DECL_OVERRIDE
+
+
 };
 
 #endif // SANDBOXWIDGET_H

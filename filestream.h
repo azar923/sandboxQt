@@ -10,6 +10,8 @@ public:
     Filestream(const char* filename, int _width, int _height, int _offsetLeft = 0, int _offsetRight = 0, int _offsetTop = 0, int _offsetBottom = 0);
     unsigned char* getData();
     void crop(int left, int right, int top, int bottom);
+    void setMaxDepth(int maxDepth);
+    void setMinDepth(int minDepth);
 
 
 private:

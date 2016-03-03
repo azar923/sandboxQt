@@ -83,6 +83,16 @@ bool InputStream::initialize()
         }
 }
 
+void InputStream::setMaxDepth(int maxDepth)
+{
+    max_depth = maxDepth;
+}
+
+void InputStream::setMinDepth(int minDepth)
+{
+    min_depth = minDepth;
+}
+
 void InputStream::filterStatistic(int data_delta)
 {
     GetDepthData(raw, width * height, min_depth, max_depth);

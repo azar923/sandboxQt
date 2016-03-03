@@ -10,17 +10,17 @@
 
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
+#include <QOpenGLFunctions_4_0_Core>
 
 
-class Scene : protected QOpenGLFunctions
+class Scene : protected QOpenGLFunctions_4_0_Core
 {
 public:
     Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT);
     void render();
     void OnMouse(int button, int state, int ax, int ay);
-    void OnSpecialKeyboard(int Key, int x, int y);
     void OnPassiveMouse(int x, int y);
-    void OnKeyboard(unsigned char Key, int x, int y);
+    void OnKeyboard(QKeyEvent* event);
 
     void createFrameBuffer();
     void createScreenQuad();
@@ -29,8 +29,26 @@ public:
     int WINDOW_WIDTH;
     int WINDOW_HEIGHT;
 
+    static Scene* getInstance() {
+        if (singleton == 0)
+            singleton = new Scene(380, 280);
+        return singleton;
+    }
+
+    Pipeline* pipeline;
+    Camera* camera;
+    Lighting* lighting;
+    Skybox* skybox;
+    Terrain* terrain;
+
+    Mat* getSandboxView();
+
+    void setWindowSize(int WIDTH, int HEIGHT);
+
 
 private:
+
+    static Scene* singleton;
     struct ScreenVertex {
         Vector3f pos;
         Vector2f tex;
@@ -38,11 +56,7 @@ private:
 
 
 
-    Pipeline* pipeline;
-    Camera* camera;
-    Lighting* lighting;
-    Skybox* skybox;
-    Terrain* terrain;
+    Mat* sandboxView;
 
     GLuint FBO;
     GLuint DBO;

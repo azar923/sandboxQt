@@ -71,3 +71,12 @@ unsigned char* Filestream::getData() {
     return cropped_data;
 }
 
+void Filestream::setMaxDepth(int maxDepth)
+{
+
+}
+
+void Filestream::setMinDepth(int minDepth)
+{
+
+}

@@ -15,6 +15,36 @@ public:
         float AmbientIntensity;
         Vector3f Direction;
         float DiffuseIntensity;
+
+        void setIntensity(float intensity)
+        {
+            this->DiffuseIntensity = intensity;
+        }
+
+        void setDirectionZ(float z)
+        {
+            this->Direction.z = z;
+        }
+        void setDirectionY(float y)
+        {
+            this->Direction.y = y;
+        }
+        void setDirectionX(float x)
+        {
+            this->Direction.x = x;
+        }
+        void setColorR(float r)
+        {
+            this->Color.x = r;
+        }
+        void setColorG(float g)
+        {
+            this->Color.y = g;
+        }
+        void setColorB(float b)
+        {
+            this->Color.z = b;
+        }
     };
 
     struct PointLight

@@ -1,7 +1,7 @@
 #include "sandbox.h"
 #include <QApplication>
+#include <QColorDialog>
 
-#include "dialog.h"
 
 int main(int argc, char *argv[])
 {
