@@ -31,7 +31,7 @@ public:
 
     static Scene* getInstance() {
         if (singleton == 0)
-            singleton = new Scene(380, 280);
+            singleton = new Scene(1280, 720);
         return singleton;
     }
 

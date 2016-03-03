@@ -16,6 +16,9 @@ uniform sampler2D snow;
 uniform sampler2D water;
 uniform sampler2D reflection;
 
+uniform float alpha;
+uniform float beta;
+
 layout (location = 0) out vec4 FragColor; 
 
 struct DirectionalLight
@@ -101,6 +104,6 @@ void main()
 
     FragColor *= DirectionalColor;
 
-    FragColor = 1.5 * FragColor - 0.25;
+    FragColor = alpha * FragColor - beta;
 
 }                                        

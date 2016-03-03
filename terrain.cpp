@@ -59,6 +59,9 @@ Terrain::Terrain(const int _width, const int _height, int _offsetLeft, int _offs
 
     cout << "Textures were loaded" << endl;
 
+    alpha = 1.5;
+    beta = 0.25;
+
     createBuffer();
     setUniforms();
 
@@ -68,6 +71,15 @@ Terrain::Terrain(const int _width, const int _height, int _offsetLeft, int _offs
 }
 
 
+void Terrain::setAlpha(float a)
+{
+    alpha = a;
+}
+
+void Terrain::setBeta(float b)
+{
+    beta = b;
+}
 
 void Terrain::setHeight(unsigned char* data)
 {
@@ -174,6 +186,9 @@ void Terrain::setUniforms()
     sandboxModeLocation = glGetUniformLocation(terrainTechnique->p, "sandboxMode");
     timerLocation = glGetUniformLocation(terrainTechnique->p, "timer");
 
+    alphaLocation = glGetUniformLocation(terrainTechnique->p, "alpha");
+    betaLocation = glGetUniformLocation(terrainTechnique->p, "beta");
+
 
     glUniform1i(grassLocation,  grass->getIndex());
     glUniform1i(sandLocation,   sand->getIndex());
@@ -253,6 +268,9 @@ void Terrain::render(Pipeline* p, Camera* c, Lighting* l, int WINDOW_WIDTH, int 
     glUniform3f(dirLightColorLocation, l->dirLight.Color.x, l->dirLight.Color.y, l->dirLight.Color.z);
     glUniform1f(dirLightAmbientIntensityLocation, l->dirLight.AmbientIntensity);
     glUniform1f(dirLightDiffuseIntensityLocation, l->dirLight.DiffuseIntensity);
+
+    glUniform1f(alphaLocation, alpha);
+    glUniform1f(betaLocation, beta);
 
     Vector3f direction = l->dirLight.Direction;
     direction.Normalize();

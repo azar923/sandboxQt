@@ -9,6 +9,7 @@ Filestream::Filestream(const char* filename, int _width, int _height, int _offse
     isCropped = false;
     width = _width;
     height = _height;
+    toFlip = false;
     data = new unsigned char[width * height];
 
     loadFromRawFile(filename, width * height, data);
@@ -74,6 +75,11 @@ unsigned char* Filestream::getData() {
 void Filestream::setMaxDepth(int maxDepth)
 {
 
+}
+
+void Filestream::setFlip(bool _toFlip)
+{
+    toFlip = _toFlip;
 }
 
 void Filestream::setMinDepth(int minDepth)

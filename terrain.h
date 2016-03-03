@@ -26,6 +26,9 @@ public:
     void setSandboxMode();
     DataStream* stream;
 
+    void setAlpha(float a);
+    void setBeta(float b);
+
 private:
 
     struct Vertex_terrain
@@ -79,6 +82,9 @@ private:
 
     int timer;
 
+    float alpha;
+    float beta;
+
 
     vector<Vertex_terrain> Vertices_terrain;
     GLuint VBO, IBO;
@@ -106,6 +112,9 @@ private:
     GLuint offsetRight;
     GLuint offsetTop;
     GLuint offsetBottom;
+
+    GLuint alphaLocation;
+    GLuint betaLocation;
 
 };
 

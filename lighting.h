@@ -16,9 +16,9 @@ public:
         Vector3f Direction;
         float DiffuseIntensity;
 
-        void setIntensity(float intensity)
+        void setDiffuseIntensity(float d)
         {
-            this->DiffuseIntensity = intensity;
+            this->DiffuseIntensity = d;
         }
 
         void setDirectionZ(float z)
@@ -44,6 +44,11 @@ public:
         void setColorB(float b)
         {
             this->Color.z = b;
+        }
+
+        void setAmbientIntensity(float a)
+        {
+            this->AmbientIntensity = a;
         }
     };
 

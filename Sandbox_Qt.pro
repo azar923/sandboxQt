@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     terrain.cpp \
     texture.cpp \
     texture2D.cpp \
-    texture3D.cpp
+    texture3D.cpp \
+    settings.cpp \
+    sensorcalibration.cpp
 
 HEADERS  += sandbox.h \
     sandboxwidget.h \
@@ -44,9 +46,13 @@ HEADERS  += sandbox.h \
     terrain.h \
     texture.h \
     texture2D.h \
-    texture3D.h
+    texture3D.h \
+    settings.h \
+    sensorcalibration.h
 
-FORMS    += sandbox.ui
+FORMS    += sandbox.ui \
+    settings.ui \
+    sensorcalibration.ui
 
 LIBS += -lGL -lGLEW -lglut
 

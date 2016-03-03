@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QColorDialog>
+#include "settings.h"
+
 
 namespace Ui {
 class Sandbox;
@@ -16,24 +18,20 @@ class Sandbox : public QMainWindow
 public:
     explicit Sandbox(QWidget *parent = 0);
     ~Sandbox();
+    void keyPressEvent(QKeyEvent* event); Q_DECL_OVERRIDE
 
 private:
     Ui::Sandbox *ui;
     QTimer* renderTimer;
-    QColorDialog* lightColorDialog;
+    QCursor* c;
+    Settings* settings;
 
 private slots:
     void renderSlot();
-    void setLightDirectionX(int);
-    void setLightDirectionY(int);
-    void setLightDirectionZ(int);
-    void setLightColorR(int);
-    void setLightColorG(int);
-    void setLightColorB(int);
-    void setKinectMinHeight(int);
-    void setKinectMaxHeight(int);
     void quit();
     void start();
+    void mode();
+    void openSettings();
 
 };
 

@@ -19,7 +19,7 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     max_depth = _max_depth;
     current = 0;
 
-
+   toFlip = false;
    offsetLeft = _offsetLeft;
    offsetRight = _offsetRight;
    offsetTop = _offsetTop;
@@ -43,6 +43,13 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
 
    initialize();
 
+
+
+}
+
+void InputStream::setFlip(bool _toFlip)
+{
+    toFlip = _toFlip;
 }
 
 bool InputStream::isSensorConnected()
@@ -154,7 +161,8 @@ void InputStream::filterData()
     cv::Rect roi = cv::Rect(offsetLeft, offsetTop, width_cropped, height_cropped);
     img = img(roi);
 
-    flip(img,img, 0);
+    if (toFlip)
+        flip(img,img, 0);
 
     for (int y = 0; y < img.rows; y++)
         for (int x = 0; x < img.cols; x++)

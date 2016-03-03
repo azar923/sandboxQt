@@ -20,6 +20,7 @@ public:
     static bool isSensorConnected();
     void setMaxDepth(int maxDepth);
     void setMinDepth(int minDepth);
+    void setFlip(bool _toFlip);
 private:
 
     openni::Status rc_depth ;
@@ -42,6 +43,7 @@ private:
     bool GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth);
 
 
+    bool toFlip;
     void Terminate();
     void filterData();
 

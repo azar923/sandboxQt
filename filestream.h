@@ -13,6 +13,8 @@ public:
     void setMaxDepth(int maxDepth);
     void setMinDepth(int minDepth);
 
+    void setFlip(bool _toFlip);
+
 
 private:
     void loadFromRawFile (const char* strName, int nSize, unsigned char* data);
@@ -30,6 +32,8 @@ private:
     int offsetRight;
     int offsetTop;
     int offsetBottom;
+
+    bool toFlip;
 };
 
 #endif // FILESTREAM_H
