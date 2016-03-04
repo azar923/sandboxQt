@@ -35,8 +35,6 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 
     technique = new ShaderTechnique("/home/maxim/sandbox/shaders/scene.vert","/home/maxim/sandbox/shaders/scene.frag" );
 
-    sandboxView = new Mat;
-    sandboxView->create(280, 380, CV_8UC3);
 }
 
 void Scene::setWindowSize(int WIDTH, int HEIGHT)
@@ -101,25 +99,6 @@ void Scene::render()
 
     terrain->render(pipeline, camera, lighting, WINDOW_WIDTH, WINDOW_HEIGHT);
     skybox->render(pipeline, camera, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0,0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    terrain->setSandboxMode();
-    terrain->render(pipeline, camera, lighting, WINDOW_WIDTH, WINDOW_HEIGHT);
-    skybox->render(pipeline, camera, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    glBindTexture(GL_TEXTURE_2D, renderTexture);
-    GLubyte data[3 * WINDOW_WIDTH * WINDOW_HEIGHT];
-    glGetTexImage(GL_TEXTURE_2D,0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
-    Mat img(WINDOW_HEIGHT, WINDOW_WIDTH, CV_8UC3, &data);
-    img.copyTo(*sandboxView);
-
-    terrain->setSandboxMode();
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 }
 
 Mat* Scene::getSandboxView()

@@ -65,8 +65,6 @@ Terrain::Terrain(const int _width, const int _height, int _offsetLeft, int _offs
     createBuffer();
     setUniforms();
 
-    setHeight(stream->getData());
-
     cout << "Terrain was created" << endl;
 }
 
@@ -243,8 +241,8 @@ void Terrain::setSandboxMode()
 
 void Terrain::render(Pipeline* p, Camera* c, Lighting* l, int WINDOW_WIDTH, int WINDOW_HEIGHT)
 {
-    if (kinectMode == 1)
-        setHeight(stream->getData());
+
+    setHeight(stream->getData());
 
     timer = clock();
     glEnable(GL_BLEND);

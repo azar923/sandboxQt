@@ -1,4 +1,5 @@
 #include "inputstream.h"
+#include <qdebug.h>
 #define MAXDEPTH 255
 
 InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth, int _offsetLeft, int _offsetRight, int _offsetTop, int _offsetBottom)
@@ -54,15 +55,26 @@ void InputStream::setFlip(bool _toFlip)
 
 bool InputStream::isSensorConnected()
 {
+    qDebug() << "Hello world";
     openni::Status status = openni::OpenNI::initialize();
     openni::Array<openni::DeviceInfo> list;
     openni::OpenNI::enumerateDevices(&list);
     int num = list.getSize();
+    qDebug() << "Num: " << num;
     if (num == 0)
+    {
+        qDebug() << "No sensors found";
+        openni::OpenNI::shutdown();
         return false;
+
+    }
     else
+    {
+        qDebug() << "Sensor is found";
+        openni::OpenNI::shutdown();
         return true;
-    openni::OpenNI::shutdown();
+    }
+
 
 }
 

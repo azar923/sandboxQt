@@ -3,6 +3,9 @@
 
 #include <QDialog>
 #include "sandbox.h"
+#include "filestream.h"
+#include "inputstream.h"
+#include "sensorsettings.h"
 
 namespace Ui {
 class SensorCalibration;
@@ -21,8 +24,16 @@ private:
 
     Sandbox* sandbox;
 
+    InputStream* sensorStream;
+
+    bool isConnected;
+
+    SensorSettings* settings;
+
 public slots:
     void createSandbox();
+    void refresh();
+    void setup();
 };
 
 #endif // SENSORCALIBRATION_H
