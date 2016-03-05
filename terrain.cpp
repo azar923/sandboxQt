@@ -8,13 +8,15 @@ Terrain::Terrain(const int _width, const int _height, int _offsetLeft, int _offs
 {
     width = _width;
     height = _height;
+    setOffset(_offsetLeft, _offsetRight, _offsetTop, _offsetBottom);
+
+}
+
+void Terrain::setup()
+{
+
 
     kinectMode = 0;
-
-    offsetLeft = _offsetLeft;
-    offsetRight = _offsetRight;
-    offsetTop = _offsetTop;
-    offsetBottom = _offsetBottom;
 
     initializeOpenGLFunctions();
 
@@ -68,6 +70,13 @@ Terrain::Terrain(const int _width, const int _height, int _offsetLeft, int _offs
     cout << "Terrain was created" << endl;
 }
 
+void Terrain::setOffset(int _left, int _right, int _top, int _bottom)
+{
+    offsetLeft = _left;
+    offsetRight = _right;
+    offsetTop = _top;
+    offsetBottom = _bottom;
+}
 
 void Terrain::setAlpha(float a)
 {
@@ -86,7 +95,7 @@ void Terrain::setHeight(unsigned char* data)
         {
             int idx = i * width + j;
 
-            Vertices_terrain[idx].pos.z =  1.0 - data[idx] / 255.0 -0.37 ;
+            Vertices_terrain[idx].pos.z =  1.0 - data[idx] / 255.0;
         }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);

@@ -28,6 +28,8 @@ public:
 
     void setAlpha(float a);
     void setBeta(float b);
+    void setup();
+    void setOffset(int _left, int _right, int _top, int _bottom);
 
 private:
 

@@ -26,10 +26,13 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
    offsetTop = _offsetTop;
    offsetBottom = _offsetBottom;
 
+   raw_mat.create(height, width, CV_8UC1);
+
    width_cropped = width - offsetLeft - offsetRight;
    height_cropped = height - offsetTop - offsetBottom;
 
    filtered_data = new unsigned char[width_cropped * height_cropped];
+
 
 
 
@@ -210,6 +213,12 @@ bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
         if (data < min_depth) data = min_depth;
         dst[i] = (unsigned char)((float)(data - min_depth) / (max_depth - min_depth) * MAXDEPTH);
     }
+
+    for (int y = 0; y < raw_mat.rows; y++)
+        for (int x = 0; x < raw_mat.cols; x++)
+        {
+            raw_mat.at<uchar>(cv::Point(x,y)) = uchar(dst[y * raw_mat.cols + x]);
+        }
     return true;
     }
 
@@ -220,9 +229,20 @@ bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
 
 }
 
+Mat InputStream::getRawMat()
+{
+    filterData();
+    return raw_mat;
+}
+
 void InputStream::Terminate()
 {
     depth.destroy();
     device.close();
     openni::OpenNI::shutdown();
+}
+
+InputStream::~InputStream()
+{
+    Terminate();
 }

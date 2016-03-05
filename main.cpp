@@ -2,25 +2,30 @@
 #include <QApplication>
 #include <QFile>
 #include "sensorcalibration.h"
-
-
+#include "crop.h"
+#include "globalsettings.h"
+#include <QDesktopWidget>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     SensorCalibration* s;
     Sandbox* w;
 
-    QFile file("/home/maxim/Sandbox_Qt/config.txt");
+    GlobalSettings::getInstance()->setConfigFile("/home/maxim/Sandbox_Qt/config.txt");
 
-    file.open(QIODevice::ReadWrite);
-    QTextStream in(&file);
+    int screenWidth = a.desktop()->screenGeometry().width();
+    int screenHeight = a.desktop()->screenGeometry().height();
+    GlobalSettings::getInstance()->setScreenWidth(screenWidth);
+    GlobalSettings::getInstance()->setScreenHeight(screenHeight);
 
-    QString string = in.readLine(50);
-    QStringList values = string.split("=");
-    qDebug() << values.at(1).toInt();
-    if (values.at(1).toInt() == 0)
+
+    bool firstTime = GlobalSettings::getInstance()->getFirstTime();
+
+    if (firstTime)
     {
         s = new SensorCalibration;
+        //GlobalSettings::getInstance()->setFirstTime(false);
+
         s->show();
     }
 
@@ -29,7 +34,6 @@ int main(int argc, char *argv[])
         w = new Sandbox;
         w -> show();
     }
-
 
     return a.exec();
 }

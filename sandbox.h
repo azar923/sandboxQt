@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QColorDialog>
 #include "settings.h"
+#include <QMediaPlayer>
+#include "globalsettings.h"
 
 
 namespace Ui {
@@ -25,6 +27,8 @@ private:
     QTimer* renderTimer;
     QCursor* c;
     Settings* settings;
+    QMediaPlayer* player;
+
 
 private slots:
     void renderSlot();

@@ -21,6 +21,10 @@ public:
     void setMaxDepth(int maxDepth);
     void setMinDepth(int minDepth);
     void setFlip(bool _toFlip);
+   cv::Mat img_depth;
+    Mat getRawMat();
+
+    ~InputStream();
 private:
 
     openni::Status rc_depth ;
@@ -30,7 +34,7 @@ private:
     openni::VideoFrameRef frame;
     openni::VideoMode videomode;
 
-    cv::Mat img_depth;
+
 
     uint16_t* raw;
     uint16_t* filtered_statistic;
@@ -53,6 +57,8 @@ private:
 
     int width_cropped;
     int height_cropped;
+
+    Mat raw_mat;
 
     uint16_t* history;
     int history_scan_depth;

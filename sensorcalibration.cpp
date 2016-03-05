@@ -20,6 +20,7 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
 
     if (isConnected)
     {
+
         ui->isFound->setText("Depth sensor is found and successfully initialized");
         palette.setColor(ui->isFound->foregroundRole(), Qt::darkGreen);
         ui->isFound->setPalette(palette);
@@ -49,6 +50,7 @@ void SensorCalibration::createSandbox()
     sandbox = new Sandbox(this);
     sandbox->show();
     this->setVisible(false);
+    qDebug() << "sandbox is created";
 }
 
 void SensorCalibration::refresh()

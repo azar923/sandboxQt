@@ -11,6 +11,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions_4_0_Core>
+#include "globalsettings.h"
 
 
 class Scene : protected QOpenGLFunctions_4_0_Core
@@ -44,7 +45,6 @@ public:
     Mat* getSandboxView();
 
     void setWindowSize(int WIDTH, int HEIGHT);
-
 
 private:
 

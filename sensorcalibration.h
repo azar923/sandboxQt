@@ -4,7 +4,6 @@
 #include <QDialog>
 #include "sandbox.h"
 #include "filestream.h"
-#include "inputstream.h"
 #include "sensorsettings.h"
 
 namespace Ui {
@@ -24,7 +23,6 @@ private:
 
     Sandbox* sandbox;
 
-    InputStream* sensorStream;
 
     bool isConnected;
 

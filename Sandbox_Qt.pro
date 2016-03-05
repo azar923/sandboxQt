@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets opengl
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets opengl multimedia
 
 TARGET = Sandbox_Qt
 TEMPLATE = app
@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     texture3D.cpp \
     settings.cpp \
     sensorcalibration.cpp \
-    sensorsettings.cpp
+    sensorsettings.cpp \
+    crop.cpp \
+    globalsettings.cpp
 
 HEADERS  += sandbox.h \
     sandboxwidget.h \
@@ -50,12 +52,15 @@ HEADERS  += sandbox.h \
     texture3D.h \
     settings.h \
     sensorcalibration.h \
-    sensorsettings.h
+    sensorsettings.h \
+    crop.h \
+    globalsettings.h
 
 FORMS    += sandbox.ui \
     settings.ui \
     sensorcalibration.ui \
-    sensorsettings.ui
+    sensorsettings.ui \
+    crop.ui
 
 LIBS += -lGL -lGLEW -lglut
 

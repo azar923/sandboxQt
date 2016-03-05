@@ -28,7 +28,15 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 
     skybox = new Skybox;
 
-    terrain = new Terrain(320, 240, 0, 0, 0, 0);
+    int terrain_width = GlobalSettings::getInstance()->getWidth();
+    int terrain_height = GlobalSettings::getInstance()->getHeight();
+    int terrain_offset_left = GlobalSettings::getInstance()->getOffsetLeft();
+    int terrain_offset_right = GlobalSettings::getInstance()->getOffsetRight();
+    int terrain_offset_top = GlobalSettings::getInstance()->getOffsetTop();
+    int terrain_offset_bottom = GlobalSettings::getInstance()->getOffsetBottom();
+
+    terrain = new Terrain(terrain_width, terrain_height, terrain_offset_left, terrain_offset_right, terrain_offset_top, terrain_offset_bottom);
+    terrain->setup();
 
     createFrameBuffer();
     createScreenQuad();

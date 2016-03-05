@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Display">
     <attribute name="title">
@@ -205,7 +205,7 @@
      <widget class="QSlider" name="direction_Y">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>80</x>
         <y>90</y>
         <width>16</width>
         <height>160</height>
@@ -218,7 +218,7 @@
      <widget class="QSlider" name="direction_X">
       <property name="geometry">
        <rect>
-        <x>80</x>
+        <x>40</x>
         <y>90</y>
         <width>16</width>
         <height>160</height>
