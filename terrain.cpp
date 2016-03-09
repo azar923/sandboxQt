@@ -51,7 +51,7 @@ void Terrain::setup()
     specularIntensity = 0.0;
     sandboxMode = 0;
 
-    terrainTechnique = new ShaderTechnique("/home/maxim/Sandbox_Qt/shaders/terrain.vert","/home/maxim/Sandbox_Qt/shaders/terrain.frag" );
+    terrainTechnique = new ShaderTechnique("/home/maxim/SandboxQt/shaders/terrain.vert","/home/maxim/SandboxQt/shaders/terrain.frag" );
 
     grass     =  new Texture2D ("/home/maxim/sandbox_mat/terrain/grass.bmp", 0 );
     sand      =  new Texture2D ("/home/maxim/sandbox_mat/terrain/sand.bmp",  1 );

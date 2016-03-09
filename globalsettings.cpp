@@ -57,7 +57,7 @@ void GlobalSettings::writeSpecificAttribute(int numberOfAttribute, QString name,
     file.open(QIODevice::ReadWrite);
     QTextStream in(&file);
 
-    QFile temp("/home/maxim/Sandbox_Qt/temp.txt");
+    QFile temp("/home/maxim/SandboxQt/temp.txt");
     temp.open(QIODevice::ReadWrite | QIODevice::Truncate);
     QTextStream temp_in(&temp);
 

@@ -42,10 +42,6 @@ Settings::Settings(QWidget *parent) :
     ui->minHeight->setMaximum(10000);
     ui->minHeight->setValue(GlobalSettings::getInstance()->getMinHeight());
 
-    ui->ambient->setMinimum(0);
-    ui->ambient->setMaximum(100);
-    ui->ambient->setValue(35);
-
     ui->diffuse->setMinimum(0);
     ui->diffuse->setMaximum(100);
     ui->diffuse->setValue(100);
@@ -59,7 +55,6 @@ Settings::Settings(QWidget *parent) :
     ui->contrast->setValue(50);
     ui->contrastValue->setText(QString::number(ui->contrast->value()));
 
-
     connect(ui->direction_Z, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionZ(int)));
     connect(ui->direction_Y, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionY(int)));
     connect(ui->direction_X, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionX(int)));
@@ -71,7 +66,6 @@ Settings::Settings(QWidget *parent) :
     connect(ui->minHeight, SIGNAL(sliderMoved(int)), this, SLOT(setKinectMinHeight(int)));
 
 
-    connect(ui->ambient, SIGNAL(sliderMoved(int)), this, SLOT(setLightAmbientIntensity(int)));
     connect(ui->diffuse, SIGNAL(sliderMoved(int)), this, SLOT(setLightDiffuseIntensity(int)));
 
     connect(ui->contrast, SIGNAL(sliderMoved(int)), this, SLOT(setContrast(int)));
@@ -84,6 +78,30 @@ Settings::Settings(QWidget *parent) :
     connect(ui->loadGrass, SIGNAL(pressed()), this, SLOT(setGrassTexture()));
     connect(ui->loadStone, SIGNAL(pressed()), this, SLOT(setStoneTexture()));
     connect(ui->loadSnow, SIGNAL(pressed()), this, SLOT(setSnowTexture()));
+
+    ui->waterImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/water.bmp")));
+    ui->sandImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/sand.bmp")));
+    ui->grassImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/grass.bmp")));
+    ui->stoneImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/stone.bmp")));
+    ui->snowImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/snow.bmp")));
+
+    ui->imgSkyboxLeft->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/left.bmp")));
+    ui->imgSkyboxRight->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/right.bmp")));
+    ui->imgSkyboxTop->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/top.bmp")));
+    ui->imgSkyboxBottom->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/bottom.bmp")));
+    ui->imgSkyboxFront->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/front.bmp")));
+    ui->imgSkyboxBack->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/back.bmp")));
+
+
+    connect(ui->comboBox, SIGNAL(activated(int)), this, SLOT(changeTerrain(int)));
+    connect(ui->resolution, SIGNAL(activated(int)), this, SLOT(setResolution(int)));
+
+    ui->loadGrass->hide();
+    ui->loadSand->hide();
+    ui->loadSnow->hide();
+    ui->loadStone->hide();
+    ui->loadWater->hide();
+
 }
 
 Settings::~Settings()
@@ -91,13 +109,41 @@ Settings::~Settings()
     delete ui;
 }
 
+void Settings::setResolution(int)
+{
+}
+
+void Settings::changeTerrain(int index)
+{
+    if (index == 2)
+    {
+        ui->loadGrass->show();
+        ui->loadSand->show();
+        ui->loadSnow->show();
+        ui->loadStone->show();
+        ui->loadWater->show();
+    }
+
+    else
+    {
+        ui->loadGrass->hide();
+        ui->loadSand->hide();
+        ui->loadSnow->hide();
+        ui->loadStone->hide();
+        ui->loadWater->hide();
+    }
+}
+
 void Settings::setWaterTexture()
 {
     QString filename = QFileDialog::getOpenFileName(this,
                                             tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
 
-    Scene::getInstance()->terrain->setWaterTexture((char*)filename.toStdString().c_str());
-    ui->waterImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->terrain->setWaterTexture((char*)filename.toStdString().c_str());
+        ui->waterImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
 }
 
 void Settings::setSandTexture()
@@ -173,10 +219,6 @@ void Settings::setLightDiffuseIntensity(int d)
     Scene::getInstance()->lighting->dirLight.setDiffuseIntensity(float(d/100.0));
 }
 
-void Settings::setLightAmbientIntensity(int a)
-{
-    Scene::getInstance()->lighting->dirLight.setAmbientIntensity(float(a/100.0));
-}
 
 void Settings::setKinectMaxHeight(int maxHeight)
 {

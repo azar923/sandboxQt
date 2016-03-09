@@ -1,6 +1,7 @@
 #include "sensorcalibration.h"
 #include "ui_sensorcalibration.h"
 #include "sandbox.h"
+#include <QFileDialog>
 
 SensorCalibration::SensorCalibration(QWidget *parent) :
     QDialog(parent),
@@ -9,6 +10,7 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("Welcome!");
     isConnected = false;
+    isSandboxCreated = false;
 
     ui->option->setVisible(false);
     ui->setup->setVisible(false);
@@ -37,6 +39,7 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
 
     connect(ui->refresh, SIGNAL(pressed()), this, SLOT(refresh()));
     connect(ui->setup, SIGNAL(pressed()), this, SLOT(setup()));
+
 }
 
 SensorCalibration::~SensorCalibration()
@@ -45,12 +48,17 @@ SensorCalibration::~SensorCalibration()
 }
 
 
+
 void SensorCalibration::createSandbox()
 {
-    sandbox = new Sandbox(this);
-    sandbox->show();
-    this->setVisible(false);
-    qDebug() << "sandbox is created";
+    if (!isSandboxCreated)
+    {
+        sandbox = new Sandbox(this);
+        sandbox->show();
+        this->setVisible(false);
+        qDebug() << "sandbox is created";
+        isSandboxCreated = true;
+    }
 }
 
 void SensorCalibration::refresh()

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>815</width>
+    <width>941</width>
     <height>367</height>
    </rect>
   </property>
@@ -18,12 +18,12 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>821</width>
+     <width>941</width>
      <height>451</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="Display">
     <attribute name="title">
@@ -293,23 +293,10 @@
      <property name="title">
       <string>Intensity</string>
      </property>
-     <widget class="QSlider" name="ambient">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>90</y>
-        <width>16</width>
-        <height>160</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
      <widget class="QSlider" name="diffuse">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>70</x>
         <y>90</y>
         <width>16</width>
         <height>160</height>
@@ -317,32 +304,19 @@
       </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="ambient_label">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>60</y>
-        <width>67</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Ambient</string>
       </property>
      </widget>
      <widget class="QLabel" name="diffuse_label">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>50</x>
         <y>60</y>
         <width>67</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Diffuse</string>
+       <string>Intensity</string>
       </property>
      </widget>
     </widget>
@@ -410,19 +384,6 @@
       <string>Resolution</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="mirroring">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>130</y>
-       <width>92</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Mirroring</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="minHeight_label">
      <property name="geometry">
       <rect>
@@ -480,6 +441,205 @@
     <attribute name="title">
      <string>Skybox</string>
     </attribute>
+    <widget class="QPushButton" name="loadSkyboxLeft">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>280</y>
+       <width>61</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgSkyboxRight">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>160</y>
+       <width>111</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSkyboxBack">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>280</y>
+       <width>61</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgSkyboxTop">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>160</y>
+       <width>111</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSkyboxTop">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>280</y>
+       <width>61</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSkyboxFront">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>280</y>
+       <width>61</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgSkyboxLeft">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>160</y>
+       <width>111</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgSkyboxBack">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>160</y>
+       <width>111</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSkyboxRight">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>280</y>
+       <width>61</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Sea</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Sunset</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Custom</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="imgSkyboxFront">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>160</y>
+       <width>111</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgSkyboxBottom">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>160</y>
+       <width>111</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadSkyboxBottom">
+     <property name="geometry">
+      <rect>
+       <x>790</x>
+       <y>280</y>
+       <width>61</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="Textures">
     <attribute name="title">
@@ -523,7 +683,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Water</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="sandImg">
@@ -539,7 +699,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Sand</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="grassImg">
@@ -555,7 +715,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Grass</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="stoneImg">
@@ -571,7 +731,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Rocks</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="snowImg">
@@ -587,7 +747,7 @@
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Snow</string>
+      <string/>
      </property>
     </widget>
     <widget class="QPushButton" name="loadWater">

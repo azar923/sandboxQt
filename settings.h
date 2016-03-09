@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "scene.h"
+#include <QFileDialog>
 
 namespace Ui {
 class Settings;
@@ -18,6 +19,7 @@ public:
 
 private:
     Ui::Settings *ui;
+    QFileDialog* d;
 
 private slots:
 
@@ -27,7 +29,6 @@ private slots:
     void setLightColorR(int);
     void setLightColorG(int);
     void setLightColorB(int);
-    void setLightAmbientIntensity(int);
     void setLightDiffuseIntensity(int);
     void setKinectMinHeight(int);
     void setKinectMaxHeight(int);
@@ -39,6 +40,9 @@ private slots:
     void setGrassTexture();
     void setStoneTexture();
     void setSnowTexture();
+    void changeTerrain(int);
+
+    void setResolution(int);
 
 };
 

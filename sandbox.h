@@ -7,6 +7,7 @@
 #include "settings.h"
 #include <QMediaPlayer>
 #include "globalsettings.h"
+#include <QThread>
 
 
 namespace Ui {
@@ -29,6 +30,7 @@ private:
     Settings* settings;
     QMediaPlayer* player;
     bool inGameMode;
+    QThread* thread;
 
 
 private slots:

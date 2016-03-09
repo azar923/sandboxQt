@@ -1,6 +1,7 @@
 #include "sandbox.h"
 #include "ui_sandbox.h"
 #include <QDebug>
+#include <QFileDialog>
 
 
 Sandbox::Sandbox(QWidget *parent) :
@@ -21,7 +22,7 @@ Sandbox::Sandbox(QWidget *parent) :
     connect(ui->mode, SIGNAL(pressed()), this, SLOT(mode()));
     connect(ui->settings, SIGNAL(pressed()), this, SLOT(openSettings()));
 
-    renderTimer->start(20);
+    renderTimer->start(0);
 
     c = new QCursor();
     c->setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
@@ -35,7 +36,6 @@ Sandbox::Sandbox(QWidget *parent) :
     inGameMode = false;
 
     settings = new Settings(this->ui->widget);
-
 
 
     //Add resize according to window screen
@@ -55,7 +55,10 @@ void Sandbox::openSettings()
 {
     settings->show();
     settings->raise();
+    settings->setFocus();
 }
+
+
 
 void Sandbox::mode()
 {
@@ -86,7 +89,7 @@ void Sandbox::start()
 
 void Sandbox::renderSlot()
 {
-    ui->widget->update();
+    ui->widget->repaint();
 }
 
 void Sandbox::keyPressEvent(QKeyEvent *event)

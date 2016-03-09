@@ -28,6 +28,8 @@ private:
 
     SensorSettings* settings;
 
+    bool isSandboxCreated;
+
 public slots:
     void createSandbox();
     void refresh();

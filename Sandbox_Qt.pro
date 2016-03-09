@@ -69,7 +69,7 @@ INCLUDEPATH += /home/maxim/flex/include/
 LIBS +=-L/home/maxim/OpenNI2/Bin/x64-Release/ -lOpenNI2
 LIBS += -L/usr/local/lib/ -lopencv_imgproc -lopencv_imgcodecs -lopencv_core -lopencv_photo -lopencv_highgui -lopencv_cudaimgproc -lopencv_cudafilters
 
-LIBS += -L/home/maxim/flex/lib/linux64 -l:flexRelease_x64.a -l:flexReleaseExt_x64.a -ldl
+
 LIBS += -L/usr/local/cuda/lib64/ -lcudart
 
 RESOURCES += \

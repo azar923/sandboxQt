@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     SensorCalibration* s;
     Sandbox* w;
 
-    GlobalSettings::getInstance()->setConfigFile("/home/maxim/Sandbox_Qt/config.txt");
+    GlobalSettings::getInstance()->setConfigFile("/home/maxim/SandboxQt/config.txt");
 
    // int screenWidth = a.desktop()->screenGeometry().width();
    // int screenHeight = a.desktop()->screenGeometry().height();

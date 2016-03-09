@@ -5,7 +5,7 @@ using namespace std;
 Skybox::Skybox()
 {
     initializeOpenGLFunctions();
-    skyboxTechnique = new ShaderTechnique("/home/maxim/Sandbox_Qt/shaders/skybox.vert","/home/maxim/Sandbox_Qt/shaders/skybox.frag" );
+    skyboxTechnique = new ShaderTechnique("/home/maxim/SandboxQt/shaders/skybox.vert","/home/maxim/SandboxQt/shaders/skybox.frag" );
     GLfloat CubeVertices[] = {-1.0, 1.0, 1.0,
                           -1.0, -1.0, 1.0,
                           1.0, -1.0, 1.0,
