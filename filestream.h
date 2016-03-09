@@ -13,7 +13,8 @@ public:
     void setMaxDepth(int maxDepth);
     void setMinDepth(int minDepth);
 
-    void setFlip(bool _toFlip);
+    void setHorisontalFlip(bool _toFlipHorisontally);
+    void setVerticalFlip(bool _toFlipVertically);
 
 
 private:

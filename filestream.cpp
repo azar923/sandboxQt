@@ -77,9 +77,14 @@ void Filestream::setMaxDepth(int maxDepth)
 
 }
 
-void Filestream::setFlip(bool _toFlip)
+void Filestream::setHorisontalFlip(bool _toFlipHorisontally)
 {
-    toFlip = _toFlip;
+
+}
+
+void Filestream::setVerticalFlip(bool _toFlipVertically)
+{
+
 }
 
 void Filestream::setMinDepth(int minDepth)

@@ -12,10 +12,18 @@ SensorSettings::SensorSettings(QWidget *parent) :
 
     setWindowTitle("Sensor settings");
 
-    width = 320;
-    height = 240;
-    x = 310;
-    y = 220;
+    width = GlobalSettings::getInstance()->getWidth();
+    height = GlobalSettings::getInstance()->getHeight();
+    if (width == 320)
+    {
+        x = 310;
+        y = 220;
+    }
+    else
+    {
+        x = 190;
+        y = 80;
+    }
 
 
     connect(ui->cancel, SIGNAL(pressed()), this, SLOT(close()));
@@ -69,7 +77,7 @@ void SensorSettings::next()
         crop->setY(y);
         crop->setHeight(height);
         crop->setWidth(width);
-        sensorStream = new InputStream(width, height,0,5000);
+        sensorStream = new InputStream(width, height,0,10000);
 
         for (int i = 0; i < 30; i++)
             crop->setDepthMap(sensorStream->getRawMat());

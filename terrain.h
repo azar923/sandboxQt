@@ -31,6 +31,20 @@ public:
     void setup();
     void setOffset(int _left, int _right, int _top, int _bottom);
 
+    void setGrassTexture(char* filename);
+    void setSandTexture(char* filename);
+    void setWaterTexture(char* filename);
+    void setStoneTexture(char* filename);
+    void setSnowTexture(char* filename);
+
+    char* getGrassName();
+    char* getSandName();
+    char* getWaterName();
+    char* getStoneName();
+    char* getSnowName();
+
+    bool isSandboxMode();
+
 private:
 
     struct Vertex_terrain

@@ -28,6 +28,7 @@ private:
     QCursor* c;
     Settings* settings;
     QMediaPlayer* player;
+    bool inGameMode;
 
 
 private slots:

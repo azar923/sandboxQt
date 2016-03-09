@@ -20,7 +20,8 @@ public:
     static bool isSensorConnected();
     void setMaxDepth(int maxDepth);
     void setMinDepth(int minDepth);
-    void setFlip(bool _toFlip);
+    void setHorisontalFlip(bool _toFlipHorisontally);
+    void setVerticalFlip(bool _toFlipVertically);
    cv::Mat img_depth;
     Mat getRawMat();
 
@@ -47,7 +48,8 @@ private:
     bool GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth);
 
 
-    bool toFlip;
+    bool toFlipVertically;
+    bool toFlipHorisontally;
     void Terminate();
     void filterData();
 

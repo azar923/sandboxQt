@@ -12,12 +12,13 @@ GlobalSettings::GlobalSettings()
 void GlobalSettings::setConfigFile(const QString filePath)
 {
     fileName = filePath;
-    qDebug() << fileName;
 
 
     QFile file(filePath);
 
     file.open(QIODevice::ReadWrite);
+
+
     QTextStream in(&file);
 
     QVector<int> settings;
@@ -40,6 +41,9 @@ void GlobalSettings::setConfigFile(const QString filePath)
     offsetBottom = settings.at(6);
     screenWidth = settings.at(7);
     screenHeight = settings.at(8);
+    minHeight = settings.at(9);
+    maxHeight = settings.at(10);
+
 }
 
 bool GlobalSettings::getFirstTime()
@@ -135,6 +139,28 @@ void GlobalSettings::setScreenHeight(int _screenHeight)
 {
     writeSpecificAttribute(8, "screenHeight", _screenHeight);
     screenHeight = _screenHeight;
+}
+
+void GlobalSettings::setMinHeight(int _minHeight)
+{
+    writeSpecificAttribute(9, "minHeight", _minHeight);
+    minHeight = _minHeight;
+}
+
+void GlobalSettings::setMaxHeight(int _maxHeight)
+{
+    writeSpecificAttribute(10, "maxHeight", _maxHeight);
+    maxHeight = _maxHeight;
+}
+
+int GlobalSettings::getMinHeight()
+{
+    return minHeight;
+}
+
+int GlobalSettings::getMaxHeight()
+{
+    return maxHeight;
 }
 
 int GlobalSettings::getScreenHeight()

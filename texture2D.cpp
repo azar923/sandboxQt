@@ -36,5 +36,19 @@ bool Texture2D::load()
 	return true;
 }
 
+void Texture2D::setImage(char *FileName)
+{
+    Texture2D::Img img;
+    img = loadBMP(FileName);
+    glBindTexture(m_textureTarget, m_textureObj);
+    glTexImage2D(m_textureTarget, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+
+}
+
+char* Texture2D::getImageName()
+{
+    return m_fileName;
+}
+
 
 

@@ -1,5 +1,7 @@
 #include "settings.h"
 #include "ui_settings.h"
+#include "globalsettings.h"
+#include <QFileDialog>
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -34,11 +36,11 @@ Settings::Settings(QWidget *parent) :
 
     ui->maxHeight->setMinimum(0);
     ui->maxHeight->setMaximum(10000);
-    ui->maxHeight->setValue(640);
+    ui->maxHeight->setValue(GlobalSettings::getInstance()->getMaxHeight());
 
     ui->minHeight->setMinimum(0);
     ui->minHeight->setMaximum(10000);
-    ui->minHeight->setValue(560);
+    ui->minHeight->setValue(GlobalSettings::getInstance()->getMinHeight());
 
     ui->ambient->setMinimum(0);
     ui->ambient->setMaximum(100);
@@ -74,13 +76,64 @@ Settings::Settings(QWidget *parent) :
 
     connect(ui->contrast, SIGNAL(sliderMoved(int)), this, SLOT(setContrast(int)));
 
-    connect(ui->flip, SIGNAL(stateChanged(int)), this, SLOT(setFlip(int)));
+    connect(ui->flip_hor, SIGNAL(stateChanged(int)), this, SLOT(setHorisontalFlip(int)));
+    connect(ui->flip_vert, SIGNAL(stateChanged(int)), this, SLOT(setVerticalFlip(int)));
 
+    connect(ui->loadWater, SIGNAL(pressed()), this, SLOT(setWaterTexture()));
+    connect(ui->loadSand, SIGNAL(pressed()), this, SLOT(setSandTexture()));
+    connect(ui->loadGrass, SIGNAL(pressed()), this, SLOT(setGrassTexture()));
+    connect(ui->loadStone, SIGNAL(pressed()), this, SLOT(setStoneTexture()));
+    connect(ui->loadSnow, SIGNAL(pressed()), this, SLOT(setSnowTexture()));
 }
 
 Settings::~Settings()
 {
     delete ui;
+}
+
+void Settings::setWaterTexture()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    Scene::getInstance()->terrain->setWaterTexture((char*)filename.toStdString().c_str());
+    ui->waterImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+}
+
+void Settings::setSandTexture()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    Scene::getInstance()->terrain->setSandTexture((char*)filename.toStdString().c_str());
+    ui->sandImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+}
+
+void Settings::setGrassTexture()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    Scene::getInstance()->terrain->setGrassTexture((char*)filename.toStdString().c_str());
+    ui->grassImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+}
+
+void Settings::setStoneTexture()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    Scene::getInstance()->terrain->setStoneTexture((char*)filename.toStdString().c_str());
+    ui->stoneImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+}
+
+void Settings::setSnowTexture()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    Scene::getInstance()->terrain->setSnowTexture((char*)filename.toStdString().c_str());
+    ui->snowImg->setPixmap(QPixmap::fromImage(QImage(filename)));
 }
 
 void Settings::setLightDirectionZ(int z)
@@ -128,13 +181,15 @@ void Settings::setLightAmbientIntensity(int a)
 void Settings::setKinectMaxHeight(int maxHeight)
 {
    ui->maxHeightValue->setText(QString::number(ui->maxHeight->value()));
-    Scene::getInstance()->terrain->stream->setMaxDepth(maxHeight);
+   GlobalSettings::getInstance()->setMaxHeight(maxHeight);
+   Scene::getInstance()->terrain->stream->setMaxDepth(maxHeight);
 }
 
 
 void Settings::setKinectMinHeight(int minHeight)
 {
     ui->minHeightValue->setText(QString::number(ui->minHeight->value()));
+    GlobalSettings::getInstance()->setMinHeight(minHeight);
     Scene::getInstance()->terrain->stream->setMinDepth(minHeight);
 }
 
@@ -148,11 +203,19 @@ void Settings::setContrast(int contrast)
     Scene::getInstance()->terrain->setAlpha(alpha);
 }
 
-void Settings::setFlip(int state)
+void Settings::setHorisontalFlip(int state)
 {
     if (state != 0)
-        Scene::getInstance()->terrain->stream->setFlip(true);
+        Scene::getInstance()->terrain->stream->setHorisontalFlip(true);
     else
-        Scene::getInstance()->terrain->stream->setFlip(false);
+        Scene::getInstance()->terrain->stream->setHorisontalFlip(false);
+}
+
+void Settings::setVerticalFlip(int state)
+{
+    if (state != 0)
+        Scene::getInstance()->terrain->stream->setVerticalFlip(true);
+    else
+        Scene::getInstance()->terrain->stream->setVerticalFlip(false);
 }
 

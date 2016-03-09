@@ -9,7 +9,7 @@ Sandbox::Sandbox(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    settings = new Settings(this->ui->widget);
+
 
     renderTimer = new QTimer(this);
 
@@ -21,7 +21,6 @@ Sandbox::Sandbox(QWidget *parent) :
     connect(ui->mode, SIGNAL(pressed()), this, SLOT(mode()));
     connect(ui->settings, SIGNAL(pressed()), this, SLOT(openSettings()));
 
-
     renderTimer->start(20);
 
     c = new QCursor();
@@ -32,6 +31,14 @@ Sandbox::Sandbox(QWidget *parent) :
     player->setMedia(QUrl::fromLocalFile("/home/maxim/Music/dreamers.mp3"));
     player->setVolume(25);
     player->play();
+
+    inGameMode = false;
+
+    settings = new Settings(this->ui->widget);
+
+
+
+    //Add resize according to window screen
 }
 
 Sandbox::~Sandbox()
@@ -41,12 +48,11 @@ Sandbox::~Sandbox()
 
 void Sandbox::quit()
 {
-    close();
+    exit(0);
 }
 
 void Sandbox::openSettings()
 {
-
     settings->show();
     settings->raise();
 }
@@ -66,19 +72,21 @@ void Sandbox::start()
     ui->exit->setVisible(false);
     ui->mode->setVisible(false);
     ui->settings->setVisible(false);
-    Scene::getInstance()->terrain->setSandboxMode();
+    if (!Scene::getInstance()->terrain->isSandboxMode())
+        Scene::getInstance()->terrain->setSandboxMode();
 
     Scene::getInstance()->setWindowSize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
     Scene::getInstance()->camera->setWindowSize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
     ui->widget->resize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
 
     showFullScreen();
+
+    inGameMode = true;
 }
 
 void Sandbox::renderSlot()
 {
     ui->widget->update();
-
 }
 
 void Sandbox::keyPressEvent(QKeyEvent *event)
@@ -88,16 +96,25 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
     Qt::Key key = static_cast<Qt::Key>(keyInt);
     if (key == Qt::Key_Escape)
     {
-        ui->start->setVisible(true);
-        ui->exit->setVisible(true);
-        ui->mode->setVisible(true);
-        ui->settings->setVisible(true);
-        Scene::getInstance()->terrain->setSandboxMode();
-        Scene::getInstance()->setWindowSize(this->width(), this->height());
-        Scene::getInstance()->camera->setWindowSize(this->width(),this->height());
-        ui->widget->resize(this->width(), this->height());
-        ui->widget->move(this->x(), this->y());
-        showNormal();
+        if (inGameMode)
+        {
+            ui->start->setVisible(true);
+            ui->exit->setVisible(true);
+            ui->mode->setVisible(true);
+            ui->settings->setVisible(true);
+            Scene::getInstance()->terrain->setSandboxMode();
+            Scene::getInstance()->setWindowSize(this->width(), this->height());
+            Scene::getInstance()->camera->setWindowSize(this->width(),this->height());
+            ui->widget->resize(this->width(), this->height());
+            ui->widget->move(this->x(), this->y());
+            showNormal();
+            inGameMode = false;
+        }
+
+        else
+        {
+            exit(0);
+        }
     }
 }
 

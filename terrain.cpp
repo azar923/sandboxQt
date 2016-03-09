@@ -1,6 +1,7 @@
 #include "terrain.h"
 #include <iostream>
 #include <time.h>
+#include "globalsettings.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ void Terrain::setup()
 
     if (isSensorConnected)
     {
-        stream = new InputStream(width, height, 560, 640, offsetLeft, offsetRight, offsetTop, offsetBottom);
+        stream = new InputStream(width, height, GlobalSettings::getInstance()->getMinHeight(), GlobalSettings::getInstance()->getMaxHeight(), offsetLeft, offsetRight, offsetTop, offsetBottom);
         cout << "Kinect stream was created" << endl;
         kinectMode = 1;
 
@@ -59,6 +60,7 @@ void Terrain::setup()
     water_tex =  new Texture2D ("/home/maxim/sandbox_mat/terrain/water.bmp", 4 );
     reflection = new Texture2D ("/home/maxim/sandbox_mat/terrain/reflection.bmp", 6);
 
+
     cout << "Textures were loaded" << endl;
 
     alpha = 1.5;
@@ -69,6 +71,57 @@ void Terrain::setup()
 
     cout << "Terrain was created" << endl;
 }
+
+void Terrain::setGrassTexture(char *filename)
+{
+    grass->setImage(filename);
+}
+
+void Terrain::setSandTexture(char *filename)
+{
+    sand->setImage(filename);
+}
+
+void Terrain::setStoneTexture(char *filename)
+{
+    stone->setImage(filename);
+}
+
+void Terrain::setWaterTexture(char *filename)
+{
+    water_tex->setImage(filename);
+}
+
+void Terrain::setSnowTexture(char *filename)
+{
+    snow->setImage(filename);
+}
+
+char* Terrain::getGrassName()
+{
+    return grass->getImageName();
+}
+
+char* Terrain::getSandName()
+{
+    return sand->getImageName();
+}
+
+char* Terrain::getStoneName()
+{
+    return stone->getImageName();
+}
+
+char* Terrain::getWaterName()
+{
+    return water_tex->getImageName();
+}
+
+char* Terrain::getSnowName()
+{
+    return snow->getImageName();
+}
+
 
 void Terrain::setOffset(int _left, int _right, int _top, int _bottom)
 {
@@ -246,6 +299,13 @@ void Terrain::setSandboxMode()
         sandboxMode = 1;
 }
 
+bool Terrain::isSandboxMode()
+{
+    if (sandboxMode == 1)
+        return true;
+    else
+        return false;
+}
 
 
 void Terrain::render(Pipeline* p, Camera* c, Lighting* l, int WINDOW_WIDTH, int WINDOW_HEIGHT)

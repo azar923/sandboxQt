@@ -12,6 +12,8 @@ class Texture2D : public Texture
 public:
     Texture2D(char* FileName, int _index);
     bool load();
+    void setImage(char* FileName);
+    char* getImageName();
 
 private:
     char* m_fileName;

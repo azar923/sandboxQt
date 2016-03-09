@@ -1,5 +1,6 @@
 #include "inputstream.h"
-#include <qdebug.h>
+#include <QDebug>
+
 #define MAXDEPTH 255
 
 InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth, int _offsetLeft, int _offsetRight, int _offsetTop, int _offsetBottom)
@@ -20,7 +21,8 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     max_depth = _max_depth;
     current = 0;
 
-   toFlip = false;
+   toFlipVertically = false;
+   toFlipHorisontally = false;
    offsetLeft = _offsetLeft;
    offsetRight = _offsetRight;
    offsetTop = _offsetTop;
@@ -33,16 +35,13 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
 
    filtered_data = new unsigned char[width_cropped * height_cropped];
 
-
-
-
-     for (int i = 0; i < width * height; i++)
-     {
-         raw[i] = 0;
-         filtered_statistic[i] = 0;
-         history[i] = 0;
-         average[i] = 0;
-     }
+   for (int i = 0; i < width * height; i++)
+   {
+        raw[i] = 0;
+        filtered_statistic[i] = 0;
+        history[i] = 0;
+        average[i] = 0;
+   }
 
 
    initialize();
@@ -51,9 +50,14 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
 
 }
 
-void InputStream::setFlip(bool _toFlip)
+void InputStream::setVerticalFlip(bool _toFlipVertically)
 {
-    toFlip = _toFlip;
+    toFlipVertically = _toFlipVertically;
+}
+
+void InputStream::setHorisontalFlip(bool _toFlipHorisontally)
+{
+    toFlipHorisontally = _toFlipHorisontally;
 }
 
 bool InputStream::isSensorConnected()
@@ -176,8 +180,10 @@ void InputStream::filterData()
     cv::Rect roi = cv::Rect(offsetLeft, offsetTop, width_cropped, height_cropped);
     img = img(roi);
 
-    if (toFlip)
+    if (toFlipHorisontally)
         flip(img,img, 0);
+    if (toFlipVertically)
+        flip(img,img, 1);
 
     for (int y = 0; y < img.rows; y++)
         for (int x = 0; x < img.cols; x++)

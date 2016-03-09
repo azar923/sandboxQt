@@ -32,7 +32,13 @@ private slots:
     void setKinectMinHeight(int);
     void setKinectMaxHeight(int);
     void setContrast(int);
-    void setFlip(int);
+    void setHorisontalFlip(int);
+    void setVerticalFlip(int);
+    void setWaterTexture();
+    void setSandTexture();
+    void setGrassTexture();
+    void setStoneTexture();
+    void setSnowTexture();
 
 };
 
