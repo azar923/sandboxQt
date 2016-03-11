@@ -16,6 +16,11 @@ uniform sampler2D snow;
 uniform sampler2D water;
 uniform sampler2D reflection;
 
+uniform int waterEnd;
+uniform int sandEnd;
+uniform int grassEnd;
+uniform int stoneEnd;
+
 uniform float alpha;
 uniform float beta;
 
@@ -82,11 +87,40 @@ void main()
     vec4 refl = texture2D(reflection, uv);
 
     vec4 DirectionalColor = CalculateDirectionalLight(gDirectionalLight);
-    float waterWeight = clamp (1.0 - abs(Position_FS_in.z - 0.0) / 40.0, 0.0, 1.0);
-    float sandWeight =  clamp (1.0 - abs(Position_FS_in.z - 60.0) / 40.0, 0.0, 1.0);
-    float landWeight =  clamp (1.0 - abs(Position_FS_in.z - 120.0) / 50.0, 0.0, 1.0);
-    float rockWeight =  clamp (1.0 - abs(Position_FS_in.z - 170.0) / 30.0, 0.0, 1.0);
-    float snowWeight =  clamp(1.0 -  abs(Position_FS_in.z - 255.0) / 100.0, 0.0, 1.0);
+    int zone_length = 50;
+
+    int waterzone_begin = 0;
+    int waterzone_end = waterEnd;
+    int waterzone_max = 0;
+    int waterzone = waterzone_end - waterzone_begin;
+
+    int sandzone_begin = waterzone_end / 2 ;
+    int sandzone_end = sandEnd;
+    int sandzone_max = (sandzone_end - sandzone_begin) / 2 + sandzone_begin;
+    int sandzone = sandzone_end - sandzone_begin;
+
+    int grasszone_begin = sandzone_max;
+    int grasszone_end = grassEnd;
+    int grasszone_max = (grasszone_end - grasszone_begin) / 2 + grasszone_begin;
+    int grasszone = grasszone_end - grasszone_begin;
+
+    int stonezone_begin = grasszone_max;
+    int stonezone_end = stoneEnd;
+    int stonezone_max = (stonezone_end - stonezone_begin) / 2 + stonezone_begin;
+    int stonezone = stonezone_end - stonezone_begin;
+
+    int snowzone_begin = stonezone_max;
+    int snowzone_end = 255;
+    int snowzone_max = 255;
+    int snowzone = snowzone_end - snowzone_begin;
+
+
+
+    float waterWeight = clamp (1.0 - abs(Position_FS_in.z - 0.0) / waterzone, 0.0, 1.0);
+    float sandWeight =  clamp (1.0 - abs(Position_FS_in.z - sandzone_max) / (sandzone / 2), 0.0, 1.0);
+    float landWeight =  clamp (1.0 - abs(Position_FS_in.z - grasszone_max) / (grasszone / 2), 0.0, 1.0);
+    float rockWeight =  clamp (1.0 - abs(Position_FS_in.z - stonezone_max) / (stonezone / 2), 0.0, 1.0);
+    float snowWeight =  clamp(1.0 -  abs(Position_FS_in.z - 255) / (255 - stonezone_max), 0.0, 1.0);
 
     float total = snowWeight + rockWeight + landWeight + sandWeight + waterWeight ;
 
@@ -107,3 +141,4 @@ void main()
     FragColor = alpha * FragColor - beta;
 
 }                                        
+                                     

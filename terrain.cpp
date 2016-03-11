@@ -66,10 +66,39 @@ void Terrain::setup()
     alpha = 1.5;
     beta = 0.25;
 
+    waterMax = GlobalSettings::getInstance()->getWaterMax();
+    sandMax = GlobalSettings::getInstance()->getSandMax();
+    grassMax = GlobalSettings::getInstance()->getGrassMax();
+    stoneMax = GlobalSettings::getInstance()->getStoneMax();
+
     createBuffer();
     setUniforms();
 
     cout << "Terrain was created" << endl;
+}
+
+void Terrain::setWaterMax(int _waterMax)
+{
+    waterMax = _waterMax;
+}
+
+
+void Terrain::setSandMax(int _sandMax)
+{
+    sandMax = _sandMax;
+}
+
+
+void Terrain::setGrassMax(int _grassMax)
+{
+    grassMax = _grassMax;
+}
+
+
+
+void Terrain::setStoneMax(int _stoneMax)
+{
+    stoneMax = _stoneMax;
 }
 
 void Terrain::setGrassTexture(char *filename)
@@ -249,6 +278,11 @@ void Terrain::setUniforms()
     alphaLocation = glGetUniformLocation(terrainTechnique->p, "alpha");
     betaLocation = glGetUniformLocation(terrainTechnique->p, "beta");
 
+    waterMaxLocation = glGetUniformLocation(terrainTechnique->p, "waterEnd");
+    sandMaxLocation = glGetUniformLocation(terrainTechnique->p, "sandEnd");
+    grassMaxLocation = glGetUniformLocation(terrainTechnique->p, "grassEnd");
+    stoneMaxLocation = glGetUniformLocation(terrainTechnique->p, "stoneEnd");
+
 
     glUniform1i(grassLocation,  grass->getIndex());
     glUniform1i(sandLocation,   sand->getIndex());
@@ -352,6 +386,11 @@ void Terrain::render(Pipeline* p, Camera* c, Lighting* l, int WINDOW_WIDTH, int 
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, (const GLfloat*)p->GetWVPTrans());
     glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, (const GLfloat*)p->GetWorldTrans());
+
+    glUniform1i(waterMaxLocation, waterMax);
+    glUniform1i(sandMaxLocation, sandMax);
+    glUniform1i(grassMaxLocation, grassMax);
+    glUniform1i(stoneMaxLocation, stoneMax);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_terrain), 0);

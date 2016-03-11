@@ -39,12 +39,18 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
 
     connect(ui->refresh, SIGNAL(pressed()), this, SLOT(refresh()));
     connect(ui->setup, SIGNAL(pressed()), this, SLOT(setup()));
+    connect(ui->exit, SIGNAL(pressed()), this, SLOT(quit()));
 
 }
 
 SensorCalibration::~SensorCalibration()
 {
     delete ui;
+}
+
+void SensorCalibration::quit()
+{
+    exit(0);
 }
 
 

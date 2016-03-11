@@ -13,11 +13,10 @@ int main(int argc, char *argv[])
 
     GlobalSettings::getInstance()->setConfigFile("/home/maxim/SandboxQt/config.txt");
 
-   // int screenWidth = a.desktop()->screenGeometry().width();
-   // int screenHeight = a.desktop()->screenGeometry().height();
-    //GlobalSettings::getInstance()->setScreenWidth(screenWidth);
-  //  GlobalSettings::getInstance()->setScreenHeight(screenHeight);
-
+    int screenWidth = a.desktop()->screenGeometry().width();
+    int screenHeight = a.desktop()->screenGeometry().height();
+    GlobalSettings::getInstance()->setScreenWidth(screenWidth);
+    GlobalSettings::getInstance()->setScreenHeight(screenHeight);
 
     bool firstTime = GlobalSettings::getInstance()->getFirstTime();
 

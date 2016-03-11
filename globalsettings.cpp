@@ -43,12 +43,48 @@ void GlobalSettings::setConfigFile(const QString filePath)
     screenHeight = settings.at(8);
     minHeight = settings.at(9);
     maxHeight = settings.at(10);
+    flipHorisontal = settings.at(11);
+    flipVertical = settings.at(12);
+    waterMax = settings.at(13);
+    sandMax = settings.at(14);
+    grassMax = settings.at(15);
+    stoneMax = settings.at(16);
 
 }
 
 bool GlobalSettings::getFirstTime()
 {
     return (bool)firstTime;
+}
+
+bool GlobalSettings::getFlipHorisontal()
+{
+    return (bool)flipHorisontal;
+}
+
+bool GlobalSettings::getFlipVertical()
+{
+    return (bool)flipVertical;
+}
+
+int GlobalSettings::getWaterMax()
+{
+    return waterMax;
+}
+
+int GlobalSettings::getGrassMax()
+{
+    return grassMax;
+}
+
+int GlobalSettings::getStoneMax()
+{
+    return stoneMax;
+}
+
+int GlobalSettings::getSandMax()
+{
+    return sandMax;
 }
 
 void GlobalSettings::writeSpecificAttribute(int numberOfAttribute, QString name, int value)
@@ -151,6 +187,42 @@ void GlobalSettings::setMaxHeight(int _maxHeight)
 {
     writeSpecificAttribute(10, "maxHeight", _maxHeight);
     maxHeight = _maxHeight;
+}
+
+void GlobalSettings::setHorisontalFlip(bool _horisontalFlip)
+{
+    writeSpecificAttribute(11, "flipHorisontal", (int)flipHorisontal);
+    flipHorisontal = (int)_horisontalFlip;
+}
+
+void GlobalSettings::setVerticalFlip(bool _verticalFlip)
+{
+    writeSpecificAttribute(12, "flipVertical", (int)flipVertical);
+    flipVertical = _verticalFlip;
+}
+
+void GlobalSettings::setWaterMax(int _waterMax)
+{
+    writeSpecificAttribute(13, "waterMax", _waterMax);
+    waterMax = _waterMax;
+}
+
+void GlobalSettings::setSandMax(int _sandMax)
+{
+    writeSpecificAttribute(14, "sandMax", _sandMax);
+    sandMax = _sandMax;
+}
+
+void GlobalSettings::setGrassMax(int _grassMax)
+{
+    writeSpecificAttribute(15, "grassMax", _grassMax);
+    grassMax = _grassMax;
+}
+
+void GlobalSettings::setStoneMax(int _stoneMax)
+{
+    writeSpecificAttribute(16, "stoneMax", _stoneMax);
+    stoneMax = _stoneMax;
 }
 
 int GlobalSettings::getMinHeight()

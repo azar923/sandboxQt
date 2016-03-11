@@ -55,6 +55,29 @@ Settings::Settings(QWidget *parent) :
     ui->contrast->setValue(50);
     ui->contrastValue->setText(QString::number(ui->contrast->value()));
 
+    ui->waterMax->setMinimum(0);
+    ui->waterMax->setMaximum(255);
+    ui->waterMax->setValue(GlobalSettings::getInstance()->getWaterMax());
+    ui->waterMaxLabel->setText(QString::number(ui->waterMax->value()));
+
+
+
+    ui->sandMax->setMinimum(0);
+    ui->sandMax->setMaximum(255);
+    ui->sandMax->setValue(GlobalSettings::getInstance()->getSandMax());
+    ui->sandMaxLabel->setText(QString::number(ui->sandMax->value()));
+
+    ui->grassMax->setMinimum(0);
+    ui->grassMax->setMaximum(255);
+    ui->grassMax->setValue(GlobalSettings::getInstance()->getGrassMax());
+    ui->grassMaxLabel->setText(QString::number(ui->grassMax->value()));
+
+
+    ui->stoneMax->setMinimum(0);
+    ui->stoneMax->setMaximum(255);
+    ui->stoneMax->setValue(GlobalSettings::getInstance()->getStoneMax());
+    ui->stoneMaxLabel->setText(QString::number(ui->stoneMax->value()));
+
     connect(ui->direction_Z, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionZ(int)));
     connect(ui->direction_Y, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionY(int)));
     connect(ui->direction_X, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionX(int)));
@@ -96,6 +119,11 @@ Settings::Settings(QWidget *parent) :
     connect(ui->comboBox, SIGNAL(activated(int)), this, SLOT(changeTerrain(int)));
     connect(ui->resolution, SIGNAL(activated(int)), this, SLOT(setResolution(int)));
 
+    connect(ui->waterMax, SIGNAL(sliderMoved(int)), this, SLOT(setWaterMax(int)));
+    connect(ui->sandMax, SIGNAL(sliderMoved(int)), this, SLOT(setSandMax(int)));
+    connect(ui->grassMax, SIGNAL(sliderMoved(int)), this, SLOT(setGrassMax(int)));
+    connect(ui->stoneMax, SIGNAL(sliderMoved(int)), this, SLOT(setStoneMax(int)));
+
     ui->loadGrass->hide();
     ui->loadSand->hide();
     ui->loadSnow->hide();
@@ -107,6 +135,34 @@ Settings::Settings(QWidget *parent) :
 Settings::~Settings()
 {
     delete ui;
+}
+
+void Settings::setWaterMax(int waterMax)
+{
+    Scene::getInstance()->terrain->setWaterMax(waterMax);
+    ui->waterMaxLabel->setText(QString::number(ui->waterMax->value()));
+    GlobalSettings::getInstance()->setWaterMax(waterMax);
+}
+
+void Settings::setSandMax(int sandMax)
+{
+    Scene::getInstance()->terrain->setSandMax(sandMax);
+    ui->sandMaxLabel->setText(QString::number(ui->sandMax->value()));
+    GlobalSettings::getInstance()->setSandMax(sandMax);
+}
+
+void Settings::setGrassMax(int grassMax)
+{
+    Scene::getInstance()->terrain->setGrassMax(grassMax);
+    ui->grassMaxLabel->setText(QString::number(ui->grassMax->value()));
+    GlobalSettings::getInstance()->setGrassMax(grassMax);
+}
+
+void Settings::setStoneMax(int stoneMax)
+{
+    Scene::getInstance()->terrain->setStoneMax(stoneMax);
+    ui->stoneMaxLabel->setText(QString::number(ui->stoneMax->value()));
+    GlobalSettings::getInstance()->setStoneMax(stoneMax);
 }
 
 void Settings::setResolution(int)

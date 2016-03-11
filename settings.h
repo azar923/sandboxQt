@@ -44,6 +44,14 @@ private slots:
 
     void setResolution(int);
 
+    void setWaterMax(int);
+
+    void setSandMax(int);
+
+    void setGrassMax(int);
+
+    void setStoneMax(int);
+
 };
 
 #endif // SETTINGS_H

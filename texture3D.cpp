@@ -50,3 +50,11 @@ bool Texture3D::load()
     glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
 
 }
+
+void Texture3D::setLeft(char *FileName)
+{
+    Texture3D::Img img;
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
+    img = loadBMP(FileName);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+}

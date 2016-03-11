@@ -37,7 +37,6 @@ Sandbox::Sandbox(QWidget *parent) :
 
     settings = new Settings(this->ui->widget);
 
-
     //Add resize according to window screen
 }
 

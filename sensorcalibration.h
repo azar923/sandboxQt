@@ -34,6 +34,7 @@ public slots:
     void createSandbox();
     void refresh();
     void setup();
+    void quit();
 };
 
 #endif // SENSORCALIBRATION_H

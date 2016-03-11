@@ -28,6 +28,8 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 
     skybox = new Skybox;
 
+
+
     int terrain_width = GlobalSettings::getInstance()->getWidth();
     int terrain_height = GlobalSettings::getInstance()->getHeight();
     int terrain_offset_left = GlobalSettings::getInstance()->getOffsetLeft();

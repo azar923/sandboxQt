@@ -14,17 +14,18 @@ SensorSettings::SensorSettings(QWidget *parent) :
 
     width = GlobalSettings::getInstance()->getWidth();
     height = GlobalSettings::getInstance()->getHeight();
+
     if (width == 320)
     {
         x = 310;
         y = 220;
     }
+
     else
     {
         x = 190;
         y = 80;
     }
-
 
     connect(ui->cancel, SIGNAL(pressed()), this, SLOT(close()));
     connect(ui->next, SIGNAL(pressed()), this, SLOT(next()));

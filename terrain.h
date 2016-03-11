@@ -45,6 +45,11 @@ public:
 
     bool isSandboxMode();
 
+    void setWaterMax(int _waterMax);
+    void setSandMax(int _sandMax);
+    void setGrassMax(int _grassMax);
+    void setStoneMax(int _stoneMax);
+
 private:
 
     struct Vertex_terrain
@@ -77,6 +82,17 @@ private:
     GLuint snowLocation;
     GLuint waterLocation;
     GLuint reflectionLocation;
+
+    GLuint waterMaxLocation;
+    GLuint sandMaxLocation;
+    GLuint grassMaxLocation;
+    GLuint stoneMaxLocation;
+
+    int waterMax;
+    int sandMax;
+    int grassMax;
+    int stoneMax;
+
 
 
 
