@@ -2,6 +2,7 @@
 #include "ui_sandbox.h"
 #include <QDebug>
 #include <QFileDialog>
+#include <QColorDialog>
 
 
 Sandbox::Sandbox(QWidget *parent) :
@@ -10,12 +11,9 @@ Sandbox::Sandbox(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-
     renderTimer = new QTimer(this);
 
     connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderSlot()));
-
 
     connect(ui->start, SIGNAL(pressed()), this, SLOT(start()));
     connect(ui->exit, SIGNAL(pressed()), this, SLOT(quit()));
@@ -24,18 +22,24 @@ Sandbox::Sandbox(QWidget *parent) :
 
     renderTimer->start(0);
 
-    c = new QCursor();
-    c->setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
-    setCursor(*c);
-
-    player = new QMediaPlayer(this);
-    player->setMedia(QUrl::fromLocalFile("/home/maxim/Music/dreamers.mp3"));
-    player->setVolume(25);
-    player->play();
+    ui->start->setAutoDefault(false);
+    ui->mode->setAutoDefault(false);
+    ui->exit->setAutoDefault(false);
+    ui->settings->setAutoDefault(false);
 
     inGameMode = false;
 
-    settings = new Settings(this->ui->widget);
+    settings = new Settings(this);
+    this->resize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+    ui->widget->resize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+    ui->exit->move(this->width() * 0.1, this->height() * 0.9);
+    ui->settings->move(this->width() * 0.35, this->height() * 0.8);
+    ui->mode->move(this->width() * 0.45, this->height() * 0.8);
+    ui->start->move(this->width() * 0.5, this->height() * 0.8);
+
+    isRolledUp = false;
+
+    showFullScreen();
 
     //Add resize according to window screen
 }
@@ -52,9 +56,9 @@ void Sandbox::quit()
 
 void Sandbox::openSettings()
 {
-    settings->show();
     settings->raise();
     settings->setFocus();
+    settings->show();
 }
 
 
@@ -100,6 +104,7 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
     {
         if (inGameMode)
         {
+
             ui->start->setVisible(true);
             ui->exit->setVisible(true);
             ui->mode->setVisible(true);
@@ -109,7 +114,6 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
             Scene::getInstance()->camera->setWindowSize(this->width(),this->height());
             ui->widget->resize(this->width(), this->height());
             ui->widget->move(this->x(), this->y());
-            showNormal();
             inGameMode = false;
         }
 
@@ -117,6 +121,51 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
         {
             exit(0);
         }
+    }
+
+    if (key == Qt::Key_F11)
+    {
+        if (!isRolledUp)
+        {
+
+            showNormal();
+            this->resize(this->width() / 2, this->height() / 2);
+            ui->widget->resize(this->width(), this->height());
+            ui->widget->move(this->x(), this->y());
+            Scene::getInstance()->setWindowSize(this->width(), this->height());
+            Scene::getInstance()->camera->setWindowSize(this->width(),this->height());
+
+            ui->exit->move(this->width() * 0.1, this->height() * 0.8);
+            ui->settings->move(this->width() * 0.3, this->height() * 0.6);
+            ui->mode->move(this->width() * 0.45, this->height() * 0.6);
+            ui->start->move(this->width() * 0.5, this->height() * 0.6);
+
+            isRolledUp = true;
+
+            ui->start->hide();
+
+        }
+
+        else
+        {
+            showFullScreen();
+            this->resize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+            Scene::getInstance()->setWindowSize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+            Scene::getInstance()->camera->setWindowSize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+            ui->widget->resize(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+            ui->widget->move(0, 0);
+            ui->start->setVisible(true);
+            ui->exit->move(this->width() * 0.1, this->height() * 0.9);
+            ui->settings->move(this->width() * 0.35, this->height() * 0.8);
+            ui->mode->move(this->width() * 0.45, this->height() * 0.8);
+            ui->start->move(this->width() * 0.5, this->height() * 0.8);
+            isRolledUp = false;
+
+
+        }
+
+
+
     }
 }
 

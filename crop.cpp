@@ -11,11 +11,23 @@ Crop::Crop(QWidget *parent) :
     setWindowTitle("Cropping");
     connect(ui->finish, SIGNAL(pressed()), this, SLOT(finished()));
 
+    connect(this, SIGNAL(destroyed(QObject*)), this, SLOT(quit()));
+
+    isAreaSelected = false;
+
+    ui->finish->setAutoDefault(false);
+
+
 }
 
 Crop::~Crop()
 {
     delete ui;
+}
+
+void Crop::quit()
+{
+    emit croppingClosed();
 }
 
 void Crop::setup()
@@ -39,10 +51,12 @@ void Crop::setX(int _x)
 
 void Crop::setDepthMap(cv::Mat img)
 {
-    QImage q_image((uchar*)img.data,img.cols, img.rows, img.step, QImage::Format_Grayscale8);
+    QImage q_image((uchar*)img.data,img.cols, img.rows, img.step, QImage::Format_RGB888);
     depthmap = q_image;
 
 }
+
+
 
 void Crop::setY(int _y)
 {
@@ -142,6 +156,8 @@ void Crop::mouseReleaseEvent(QMouseEvent *event)
             offsetRight = image->topRight().x() - cropping.topRight().x();
             offsetTop = cropping.topLeft().y() - image->topLeft().y();
             offsetBottom = image->bottomRight().y() - cropping.bottomRight().y();
+
+            isAreaSelected = true;
         }
 
     repaint();

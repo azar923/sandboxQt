@@ -15,6 +15,13 @@ public:
     Skybox();
     void render(Pipeline *p, Camera *c, int WINDOW_WIDTH, int WINDOW_HEIGHT);
 
+    void setLeft(char* FileName);
+    void setRight(char* FileName);
+    void setTop(char* FileName);
+    void setBottom(char* FileName);
+    void setFront(char* FileName);
+    void setBack(char* FileName);
+
 
 private:
     Texture3D* texture;

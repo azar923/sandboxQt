@@ -4,6 +4,8 @@
 #include <QDialog>
 #include "scene.h"
 #include <QFileDialog>
+#include <QColorDialog>
+#include "lightdirection.h"
 
 namespace Ui {
 class Settings;
@@ -20,27 +22,25 @@ public:
 private:
     Ui::Settings *ui;
     QFileDialog* d;
+    QColorDialog* colorDialog;
+    LightDirection* lightDirection;
 
 private slots:
 
-    void setLightDirectionX(int);
-    void setLightDirectionY(int);
-    void setLightDirectionZ(int);
-    void setLightColorR(int);
-    void setLightColorG(int);
-    void setLightColorB(int);
+
     void setLightDiffuseIntensity(int);
     void setKinectMinHeight(int);
     void setKinectMaxHeight(int);
     void setContrast(int);
-    void setHorisontalFlip(int);
-    void setVerticalFlip(int);
+    void setHorisontalFlip(bool);
+    void setVerticalFlip(bool);
     void setWaterTexture();
     void setSandTexture();
     void setGrassTexture();
     void setStoneTexture();
     void setSnowTexture();
     void changeTerrain(int);
+    void changeSkybox(int);
 
     void setResolution(int);
 
@@ -51,6 +51,19 @@ private slots:
     void setGrassMax(int);
 
     void setStoneMax(int);
+
+    void resetSettings();
+
+    void setSkyboxLeft();
+    void setSkyboxRight();
+    void setSkyboxTop();
+    void setSkyboxBottom();
+    void setSkyboxFront();
+    void setSkyboxBack();
+
+    void chooseColor();
+
+    void setDirection();
 
 };
 

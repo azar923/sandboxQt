@@ -94,22 +94,22 @@ void main()
     int waterzone_max = 0;
     int waterzone = waterzone_end - waterzone_begin;
 
-    int sandzone_begin = waterzone_end / 2 ;
+    int sandzone_begin = waterzone / 2 + waterzone/4 ;
     int sandzone_end = sandEnd;
     int sandzone_max = (sandzone_end - sandzone_begin) / 2 + sandzone_begin;
     int sandzone = sandzone_end - sandzone_begin;
 
-    int grasszone_begin = sandzone_max;
+    int grasszone_begin = sandzone_max + sandzone/5;
     int grasszone_end = grassEnd;
     int grasszone_max = (grasszone_end - grasszone_begin) / 2 + grasszone_begin;
     int grasszone = grasszone_end - grasszone_begin;
 
-    int stonezone_begin = grasszone_max;
+    int stonezone_begin = grasszone_max + grasszone/5;
     int stonezone_end = stoneEnd;
     int stonezone_max = (stonezone_end - stonezone_begin) / 2 + stonezone_begin;
     int stonezone = stonezone_end - stonezone_begin;
 
-    int snowzone_begin = stonezone_max;
+    int snowzone_begin = stonezone_max + stonezone/5;
     int snowzone_end = 255;
     int snowzone_max = 255;
     int snowzone = snowzone_end - snowzone_begin;

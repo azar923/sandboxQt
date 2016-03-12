@@ -32,10 +32,13 @@ public:
     void setWidth(int _width);
     void setup();
 
+
     int offsetRight;
     int offsetLeft;
     int offsetBottom;
     int offsetTop;
+
+    bool isAreaSelected;
 
     void setDepthMap(cv::Mat img);
 
@@ -60,8 +63,11 @@ private:
 
 signals:
     void croppingFinished();
+    void croppingClosed();
+
 public slots:
     void finished();
+    void quit();
 };
 
 #endif // CROP_H

@@ -58,3 +58,43 @@ void Texture3D::setLeft(char *FileName)
     img = loadBMP(FileName);
     glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
 }
+
+void Texture3D::setRight(char *FileName)
+{
+    Texture3D::Img img;
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
+    img = loadBMP(FileName);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+}
+
+void Texture3D::setFront(char *FileName)
+{
+    Texture3D::Img img;
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
+    img = loadBMP(FileName);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+}
+
+void Texture3D::setBack(char *FileName)
+{
+    Texture3D::Img img;
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
+    img = loadBMP(FileName);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+}
+
+void Texture3D::setTop(char *FileName)
+{
+    Texture3D::Img img;
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
+    img = loadBMP(FileName);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+}
+
+void Texture3D::setBottom(char *FileName)
+{
+    Texture3D::Img img;
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
+    img = loadBMP(FileName);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, img.width, img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+}

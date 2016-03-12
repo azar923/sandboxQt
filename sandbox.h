@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include <QColorDialog>
+
 #include "settings.h"
 #include <QMediaPlayer>
 #include "globalsettings.h"
@@ -28,9 +28,9 @@ private:
     QTimer* renderTimer;
     QCursor* c;
     Settings* settings;
-    QMediaPlayer* player;
     bool inGameMode;
-    QThread* thread;
+    bool isRolledUp;
+
 
 
 private slots:

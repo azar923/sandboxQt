@@ -75,4 +75,34 @@ void Skybox::render(Pipeline* p, Camera* c, int WINDOW_WIDTH, int WINDOW_HEIGHT)
     glUseProgram(NULL);
 }
 
+void Skybox::setLeft(char* FileName)
+{
+    texture->setLeft(FileName);
+}
+
+void Skybox::setRight(char* FileName)
+{
+    texture->setRight(FileName);
+}
+
+void Skybox::setTop(char* FileName)
+{
+    texture->setTop(FileName);
+}
+
+void Skybox::setBottom(char* FileName)
+{
+    texture->setBottom(FileName);
+}
+
+void Skybox::setFront(char* FileName)
+{
+    texture->setFront(FileName);
+}
+
+void Skybox::setBack(char* FileName)
+{
+    texture->setBack(FileName);
+}
+
 

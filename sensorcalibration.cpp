@@ -29,6 +29,7 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
         ui->option->setVisible(true);
         ui->option->setText("Now you can click 'Set up' to adjust sensor settings\n or you can click 'Next' to skip this step and continue with defaults");
         ui->setup->setVisible(true);
+        GlobalSettings::getInstance()->setSensorMode(true);
     }
     else
     {
@@ -40,6 +41,11 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
     connect(ui->refresh, SIGNAL(pressed()), this, SLOT(refresh()));
     connect(ui->setup, SIGNAL(pressed()), this, SLOT(setup()));
     connect(ui->exit, SIGNAL(pressed()), this, SLOT(quit()));
+
+    ui->refresh->setAutoDefault(false);
+    ui->setup->setAutoDefault(false);
+    ui->next->setAutoDefault(false);
+    ui->exit->setAutoDefault(false);
 
 }
 
@@ -82,6 +88,7 @@ void SensorCalibration::refresh()
             ui->option->setVisible(true);
             ui->option->setText("Now you can click 'Set up' to adjust sensor settings\n or you can click 'Next' to skip this step and continue with defaults");
             ui->setup->setVisible(true);
+            GlobalSettings::getInstance()->setSensorMode(true);
         }
     }
 }

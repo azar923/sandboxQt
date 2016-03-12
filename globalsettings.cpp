@@ -49,7 +49,25 @@ void GlobalSettings::setConfigFile(const QString filePath)
     sandMax = settings.at(14);
     grassMax = settings.at(15);
     stoneMax = settings.at(16);
+    lightDirectionX = settings.at(17);
+    lightDirectionY = settings.at(18);
+    lightDirectionZ = settings.at(19);
+    lightColorR = settings.at(20);
+    lightColorG = settings.at(21);
+    lightColorB = settings.at(22);
+    lightIntensity = settings.at(23);
 
+    sensorMode = false;
+}
+
+bool GlobalSettings::getSensorMode()
+{
+    return sensorMode;
+}
+
+void GlobalSettings::setSensorMode(bool isSensorMode)
+{
+    sensorMode = isSensorMode;
 }
 
 bool GlobalSettings::getFirstTime()
@@ -85,6 +103,41 @@ int GlobalSettings::getStoneMax()
 int GlobalSettings::getSandMax()
 {
     return sandMax;
+}
+
+int GlobalSettings::getLightDirectionX()
+{
+    return lightDirectionX;
+}
+
+int GlobalSettings::getLightDirectionY()
+{
+    return lightDirectionY;
+}
+
+int GlobalSettings::getLightDirectionZ()
+{
+    return lightDirectionZ;
+}
+
+int GlobalSettings::getLightColorR()
+{
+    return lightColorR;
+}
+
+int GlobalSettings::getLightColorG()
+{
+    return lightColorG;
+}
+
+int GlobalSettings::getLightColorB()
+{
+    return lightColorB;
+}
+
+int GlobalSettings::getLightIntensity()
+{
+    return lightIntensity;
 }
 
 void GlobalSettings::writeSpecificAttribute(int numberOfAttribute, QString name, int value)
@@ -191,14 +244,15 @@ void GlobalSettings::setMaxHeight(int _maxHeight)
 
 void GlobalSettings::setHorisontalFlip(bool _horisontalFlip)
 {
-    writeSpecificAttribute(11, "flipHorisontal", (int)flipHorisontal);
+    writeSpecificAttribute(11, "flipHorisontal", (int)_horisontalFlip);
     flipHorisontal = (int)_horisontalFlip;
 }
 
 void GlobalSettings::setVerticalFlip(bool _verticalFlip)
 {
-    writeSpecificAttribute(12, "flipVertical", (int)flipVertical);
+    writeSpecificAttribute(12, "flipVertical", (int)_verticalFlip);
     flipVertical = _verticalFlip;
+    qDebug() << flipVertical;
 }
 
 void GlobalSettings::setWaterMax(int _waterMax)
@@ -223,6 +277,48 @@ void GlobalSettings::setStoneMax(int _stoneMax)
 {
     writeSpecificAttribute(16, "stoneMax", _stoneMax);
     stoneMax = _stoneMax;
+}
+
+void GlobalSettings::setLightDirectionX(int _directionX)
+{
+    writeSpecificAttribute(17, "lightDirectionX", _directionX);
+    lightDirectionX = _directionX;
+}
+
+void GlobalSettings::setLightDirectionY(int _directionY)
+{
+    writeSpecificAttribute(18, "lightDirectionY", _directionY);
+    lightDirectionY = _directionY;
+}
+
+void GlobalSettings::setLightDirectionZ(int _directionZ)
+{
+    writeSpecificAttribute(19, "lightDirectionZ", _directionZ);
+    lightDirectionZ = _directionZ;
+}
+
+void GlobalSettings::setLightColorR(int _lightColorR)
+{
+    writeSpecificAttribute(20, "lightColorR", _lightColorR);
+    lightColorR = _lightColorR;
+}
+
+void GlobalSettings::setLightColorG(int _lightColorG)
+{
+    writeSpecificAttribute(21, "lightColorG", _lightColorG);
+    lightColorG = _lightColorG;
+}
+
+void GlobalSettings::setLightColorB(int _lightColorB)
+{
+    writeSpecificAttribute(22, "lightColorB", _lightColorB);
+    lightColorB = _lightColorB;
+}
+
+void GlobalSettings::setLightIntensity(int _lightIntensity)
+{
+    writeSpecificAttribute(23, "lightIntensity", _lightIntensity);
+    lightIntensity = _lightIntensity;
 }
 
 int GlobalSettings::getMinHeight()

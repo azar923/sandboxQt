@@ -66,12 +66,12 @@
    </property>
    <item>
     <property name="text">
-     <string>320x240</string>
+     <string>640x480</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>640x480</string>
+     <string>320x240</string>
     </property>
    </item>
   </widget>
@@ -86,19 +86,6 @@
    </property>
    <property name="text">
     <string>Finish</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="back">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>670</y>
-     <width>89</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Back</string>
    </property>
   </widget>
  </widget>

@@ -24,20 +24,39 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
     pipeline = new Pipeline;
     lighting = new Lighting;
 
-    lighting->setDirectionalLight();
+    float lightDirectionX = (float)GlobalSettings::getInstance()->getLightDirectionX() / 100.0;
+    float lightDirectionY = (float)GlobalSettings::getInstance()->getLightDirectionY() / 100.0;
+    float lightDirectionZ = (float)GlobalSettings::getInstance()->getLightDirectionZ() / 100.0;
+
+    float lightColorR = (float)GlobalSettings::getInstance()->getLightColorR() / 100.0;
+    float lightColorG = (float)GlobalSettings::getInstance()->getLightColorG() / 100.0;
+    float lightColorB = (float)GlobalSettings::getInstance()->getLightColorB() / 100.0;
+
+    float lightIntensity = (float)GlobalSettings::getInstance()->getLightIntensity() / 100.0;
+
+
+    lighting->setDirectionalLight(0.35, Vector3f(lightColorR, lightColorG, lightColorB), lightIntensity, Vector3f(lightDirectionX, lightDirectionY, lightDirectionZ));
 
     skybox = new Skybox;
 
+    bool isSensorMode = GlobalSettings::getInstance()->getSensorMode();
+    if (isSensorMode)
+    {
+        int terrain_width = GlobalSettings::getInstance()->getWidth();
+        int terrain_height = GlobalSettings::getInstance()->getHeight();
+        int terrain_offset_left = GlobalSettings::getInstance()->getOffsetLeft();
+        int terrain_offset_right = GlobalSettings::getInstance()->getOffsetRight();
+        int terrain_offset_top = GlobalSettings::getInstance()->getOffsetTop();
+        int terrain_offset_bottom = GlobalSettings::getInstance()->getOffsetBottom();
 
+        terrain = new Terrain(terrain_width, terrain_height, terrain_offset_left, terrain_offset_right, terrain_offset_top, terrain_offset_bottom);
+    }
 
-    int terrain_width = GlobalSettings::getInstance()->getWidth();
-    int terrain_height = GlobalSettings::getInstance()->getHeight();
-    int terrain_offset_left = GlobalSettings::getInstance()->getOffsetLeft();
-    int terrain_offset_right = GlobalSettings::getInstance()->getOffsetRight();
-    int terrain_offset_top = GlobalSettings::getInstance()->getOffsetTop();
-    int terrain_offset_bottom = GlobalSettings::getInstance()->getOffsetBottom();
+    else
+    {
+        terrain = new Terrain(320, 240);
+    }
 
-    terrain = new Terrain(terrain_width, terrain_height, terrain_offset_left, terrain_offset_right, terrain_offset_top, terrain_offset_bottom);
     terrain->setup();
 
     createFrameBuffer();
@@ -45,7 +64,10 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 
     technique = new ShaderTechnique("/home/maxim/sandbox/shaders/scene.vert","/home/maxim/sandbox/shaders/scene.frag" );
 
+ //   sandboxView = new Mat(WINDOW_HEIGHT, WINDOW_WIDTH, CV_8UC4);
 }
+
+
 
 void Scene::setWindowSize(int WIDTH, int HEIGHT)
 {
@@ -53,6 +75,18 @@ void Scene::setWindowSize(int WIDTH, int HEIGHT)
     WINDOW_HEIGHT = HEIGHT;
 
     camera->setWindowSize(WIDTH, HEIGHT);
+}
+
+void Scene::changeTerrain()
+{
+    delete terrain;
+    int terrain_offset_left = GlobalSettings::getInstance()->getOffsetLeft();
+    int terrain_offset_right = GlobalSettings::getInstance()->getOffsetRight();
+    int terrain_offset_top = GlobalSettings::getInstance()->getOffsetTop();
+    int terrain_offset_bottom = GlobalSettings::getInstance()->getOffsetBottom();
+    terrain = new Terrain(terrain_offset_left/2, terrain_offset_right/2, terrain_offset_top/2, terrain_offset_bottom/2);
+    terrain->setup();
+
 }
 
 
@@ -109,11 +143,32 @@ void Scene::render()
 
     terrain->render(pipeline, camera, lighting, WINDOW_WIDTH, WINDOW_HEIGHT);
     skybox->render(pipeline, camera, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+
+
+
+
 }
 
 Mat* Scene::getSandboxView()
 {
-    return sandboxView;
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport(0,0, GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+
+    terrain->setSandboxMode();
+    terrain->render(pipeline, camera, lighting, GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+    skybox->render(pipeline, camera, GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
+    glBindTexture(GL_TEXTURE_2D, renderTexture);
+    Mat* view =  new Mat(GlobalSettings::getInstance()->getScreenHeight(), GlobalSettings::getInstance()->getScreenWidth(), CV_8UC4);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_BGRA, GL_UNSIGNED_BYTE, view->data);
+
+
+    terrain->setSandboxMode();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    return view;
 }
 
 

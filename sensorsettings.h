@@ -48,6 +48,7 @@ public slots:
     void next();
     void setResolution(int);
     void setCropping();
+    void quit();
 };
 
 #endif // SENSORSETTINGS_H

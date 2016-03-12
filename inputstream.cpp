@@ -1,5 +1,6 @@
 #include "inputstream.h"
 #include <QDebug>
+#include "globalsettings.h"
 
 #define MAXDEPTH 255
 
@@ -21,14 +22,14 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     max_depth = _max_depth;
     current = 0;
 
-   toFlipVertically = false;
-   toFlipHorisontally = false;
+   toFlipVertically = GlobalSettings::getInstance()->getFlipVertical();
+   toFlipHorisontally = GlobalSettings::getInstance()->getFlipHorisontal();
    offsetLeft = _offsetLeft;
    offsetRight = _offsetRight;
    offsetTop = _offsetTop;
    offsetBottom = _offsetBottom;
 
-   raw_mat.create(height, width, CV_8UC1);
+   raw_mat.create(height, width, CV_8UC3);
 
    width_cropped = width - offsetLeft - offsetRight;
    height_cropped = height - offsetTop - offsetBottom;
@@ -200,6 +201,7 @@ unsigned char* InputStream::getData()
     return filtered_data;
 }
 
+
 bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth)
 {
     unsigned short data = 0;
@@ -220,11 +222,6 @@ bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
         dst[i] = (unsigned char)((float)(data - min_depth) / (max_depth - min_depth) * MAXDEPTH);
     }
 
-    for (int y = 0; y < raw_mat.rows; y++)
-        for (int x = 0; x < raw_mat.cols; x++)
-        {
-            raw_mat.at<uchar>(cv::Point(x,y)) = uchar(dst[y * raw_mat.cols + x]);
-        }
     return true;
     }
 
@@ -237,8 +234,32 @@ bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
 
 Mat InputStream::getRawMat()
 {
-    filterData();
+    unsigned short data = 0;
+    rc_depth = depth.readFrame(&frame);
+
+    if (rc_depth == openni::STATUS_OK) {
+        openni::DepthPixel* pDepth = (openni::DepthPixel*)frame.getData();
+    for (int i = 0; i < width * height; i++)
+    {
+        data = pDepth[i];
+        raw[i] = data;
+    }
+
+    uint16_t max = 0;
+
+    for (int i = 0; i < width * height; i++)
+        if (raw[i] > max)
+            max = raw[i];
+
+    for (int y = 0; y < raw_mat.rows; y++)
+        for (int x = 0; x < raw_mat.cols; x++)
+        {
+            raw_mat.at<Vec3b>(Point(x,y)) = Vec3b(0, 0, uchar(raw[y * raw_mat.cols + x] * 255.0 / max));
+
+        }
+
     return raw_mat;
+    }
 }
 
 void InputStream::Terminate()

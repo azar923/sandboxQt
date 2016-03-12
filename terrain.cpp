@@ -29,16 +29,19 @@ void Terrain::setup()
         cout << "Kinect stream was created" << endl;
         kinectMode = 1;
 
+
     }
 
     else
     {
         cout << "Kinect was not initialized" << endl;
-        stream = new Filestream("/home/maxim/sandbox_mat/map.raw", width, height, offsetLeft, offsetRight, offsetTop, offsetBottom);
+        stream = new Filestream("/home/maxim/sandbox_mat/map.raw", 320, 240);
     }
 
     width  -= (offsetLeft +   offsetRight);
     height -= (offsetBottom + offsetTop);
+    
+    // Сделать так, чтобы при загрузке FileStream он без проблем загружал карту высот
 
     dx = 2.0 / (width-1);
     dy = 2.0 / (height-1);
@@ -176,8 +179,10 @@ void Terrain::setHeight(unsigned char* data)
         for (int j = 0; j < width ; j++)
         {
             int idx = i * width + j;
-
-            Vertices_terrain[idx].pos.z =  1.0 - data[idx] / 255.0;
+            if (kinectMode == 1)
+                Vertices_terrain[idx].pos.z = 1.0 - data[idx] / 255.0;
+            else
+                Vertices_terrain[idx].pos.z = data[idx] / 255.0 + 0.3;
         }
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -401,10 +406,6 @@ void Terrain::render(Pipeline* p, Camera* c, Lighting* l, int WINDOW_WIDTH, int 
 
 
     glDrawElements(GL_TRIANGLES, (width - 1) * (height - 1) * 6, GL_UNSIGNED_INT, 0);
-    glUseProgram(NULL);
-
-
-
     glUseProgram(NULL);
 
     timer = 0;

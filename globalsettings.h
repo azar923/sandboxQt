@@ -25,6 +25,14 @@ public:
     int getSandMax();
     int getGrassMax();
     int getStoneMax();
+    int getLightDirectionX();
+    int getLightDirectionY();
+    int getLightDirectionZ();
+    int getLightColorR();
+    int getLightColorG();
+    int getLightColorB();
+    int getLightIntensity();
+    bool getSensorMode();
 
     void setFirstTime(bool isFirstTime);
     void setWidth(int _width);
@@ -43,6 +51,14 @@ public:
     void setSandMax(int _sandMax);
     void setGrassMax(int _grassMax);
     void setStoneMax(int _stoneMax);
+    void setLightDirectionX(int _directionX);
+    void setLightDirectionY(int _directionY);
+    void setLightDirectionZ(int _directionZ);
+    void setLightColorR(int _lightColorR);
+    void setLightColorG(int _lightColorG);
+    void setLightColorB(int _lightColorB);
+    void setLightIntensity(int _lightIntensity);
+    void setSensorMode(bool isSensorMode);
 
     static GlobalSettings* getInstance() {
         if (singleton == 0)
@@ -71,6 +87,15 @@ private:
     int sandMax; //14
     int grassMax; //15
     int stoneMax; //16
+    int lightDirectionX; //17
+    int lightDirectionY; //18
+    int lightDirectionZ;//19
+    int lightColorR;//20
+    int lightColorG;//21
+    int lightColorB;//22
+    int lightIntensity;//23
+
+    bool sensorMode;
 
     static GlobalSettings* singleton;
 

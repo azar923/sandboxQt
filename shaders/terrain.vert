@@ -45,7 +45,7 @@ void main()
         gl_Position = gWVP * vec4(Position.x, Position.y, Position.z, 1.0);
   }
 
-  projCoords = gl_Position;
+  projCoords = OrthoMatrix(-1.0, 1.0, -1.0, 1.0, -2.0, 2.0) * vec4(Position.x, Position.y, Position.z, 1.0);
 
   vec2 t1 = vec2(timer * 0.0002, timer * 0.0002) ;
   vec2 t2 = vec2(timer * 0.00002, timer * 0.00002);

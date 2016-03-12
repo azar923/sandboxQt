@@ -38,15 +38,36 @@ SensorSettings::SensorSettings(QWidget *parent) :
     crop = new Crop(this);
 
     connect(this->crop, SIGNAL(croppingFinished()), this, SLOT(setCropping()));
+
+    connect(this->crop, SIGNAL(croppingClosed()), this, SLOT(quit()));
+
+    offsetLeft = 0;
+    offsetRight = 0;
+    offsetTop = 0;
+    offsetBottom = 0;
+
+
+    ui->cancel->setAutoDefault(false);
+    ui->finish->setAutoDefault(false);
+    ui->next->setAutoDefault(false);
+}
+
+void SensorSettings::quit()
+{
+    qDebug() << "we are here";
 }
 
 void SensorSettings::setCropping()
 {
     qDebug() << "Cropping is set";
-    offsetLeft = crop->offsetLeft;
-    offsetRight = crop->offsetRight;
-    offsetTop = crop->offsetTop;
-    offsetBottom = crop->offsetBottom;
+
+    if (crop->isAreaSelected)
+    {
+        offsetLeft = crop->offsetLeft;
+        offsetRight = crop->offsetRight;
+        offsetTop = crop->offsetTop;
+        offsetBottom = crop->offsetBottom;
+    }
     isCroppingSetUp = true;
 
     GlobalSettings::getInstance()->setOffsetLeft(offsetLeft);
@@ -54,13 +75,17 @@ void SensorSettings::setCropping()
     GlobalSettings::getInstance()->setOffsetTop(offsetTop);
     GlobalSettings::getInstance()->setOffsetBottom(offsetBottom);
 
-    delete sensorStream;
+    sensorStream->Terminate();
+
+    ui->resolution->hide();
 
     ui->label->setText("Sensor is set up! ");
     ui->next->hide();
     ui->cancel->hide();
-    ui->back->hide();
+
     ui->finish->setVisible(true);
+    GlobalSettings::getInstance()->setSensorMode(true);
+
 }
 
 SensorSettings::~SensorSettings()
@@ -73,17 +98,13 @@ void SensorSettings::next()
     if (!isCroppingSetUp)
     {
 
-        ui->resolution->hide();
         crop->setX(x);
         crop->setY(y);
         crop->setHeight(height);
         crop->setWidth(width);
         sensorStream = new InputStream(width, height,0,10000);
 
-        for (int i = 0; i < 30; i++)
-            crop->setDepthMap(sensorStream->getRawMat());
-
-        imwrite("/home/maxim/map.jpg", sensorStream->getRawMat());
+        crop->setDepthMap(sensorStream->getRawMat());
         crop->setup();
 
         crop->show();
@@ -93,7 +114,7 @@ void SensorSettings::next()
 
 void SensorSettings::setResolution(int option)
 {
-    if (option == 1)
+    if (option == 0)
     {
         width = 640;
         height = 480;
@@ -102,6 +123,8 @@ void SensorSettings::setResolution(int option)
 
         GlobalSettings::getInstance()->setWidth(width);
         GlobalSettings::getInstance()->setHeight(height);
+
+        qDebug() << "res = 640";
     }
 
     else
@@ -110,6 +133,8 @@ void SensorSettings::setResolution(int option)
         height = 240;
         x = 310;
         y = 220;
+
+        qDebug() << "res = 320";
 
         GlobalSettings::getInstance()->setWidth(width);
         GlobalSettings::getInstance()->setHeight(height);

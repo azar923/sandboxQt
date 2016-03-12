@@ -26,13 +26,15 @@ public:
     void createFrameBuffer();
     void createScreenQuad();
 
+    void changeTerrain();
+
 
     int WINDOW_WIDTH;
     int WINDOW_HEIGHT;
 
     static Scene* getInstance() {
         if (singleton == 0)
-            singleton = new Scene(1280, 720);
+            singleton = new Scene(GlobalSettings::getInstance()->getScreenWidth(), GlobalSettings::getInstance()->getScreenHeight());
         return singleton;
     }
 
@@ -41,6 +43,7 @@ public:
     Lighting* lighting;
     Skybox* skybox;
     Terrain* terrain;
+
 
     Mat* getSandboxView();
 

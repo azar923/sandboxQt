@@ -24,7 +24,7 @@ public:
     void setVerticalFlip(bool _toFlipVertically);
    cv::Mat img_depth;
     Mat getRawMat();
-
+   void Terminate();
     ~InputStream();
 private:
 
@@ -50,7 +50,7 @@ private:
 
     bool toFlipVertically;
     bool toFlipHorisontally;
-    void Terminate();
+
     void filterData();
 
 

@@ -10,41 +10,33 @@ Settings::Settings(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("Settings");
 
-    ui->direction_Z->setMinimum(0);
-    ui->direction_Z->setMaximum(100);
-    ui->direction_Z->setValue(10);
+    ui->chooseColor->setAutoDefault(false);
+    ui->setDirection->setAutoDefault(false);
+    ui->loadGrass->setAutoDefault(false);
+    ui->loadWater->setAutoDefault(false);
+    ui->loadSand->setAutoDefault(false);
+    ui->loadStone->setAutoDefault(false);
+    ui->loadSnow->setAutoDefault(false);
+    ui->loadSkyboxLeft->setAutoDefault(false);
+    ui->loadSkyboxRight->setAutoDefault(false);
+    ui->loadSkyboxTop->setAutoDefault(false);
+    ui->loadSkyboxBottom->setAutoDefault(false);
+    ui->loadSkyboxFront->setAutoDefault(false);
+    ui->loadSkyboxBack->setAutoDefault(false);
+    ui->reset->setAutoDefault(false);
 
-    ui->direction_Y->setMinimum(0);
-    ui->direction_Y->setMaximum(100);
-    ui->direction_Y->setValue(100);
-
-    ui->direction_X->setMinimum(0);
-    ui->direction_X->setMaximum(100);
-    ui->direction_X->setValue(10);
-
-    ui->color_R->setMinimum(0);
-    ui->color_R->setMaximum(100);
-    ui->color_R->setValue(100);
-
-    ui->color_G->setMinimum(0);
-    ui->color_G->setMaximum(100);
-    ui->color_G->setValue(100);
-
-    ui->color_B->setMinimum(0);
-    ui->color_B->setMaximum(100);
-    ui->color_B->setValue(100);
 
     ui->maxHeight->setMinimum(0);
-    ui->maxHeight->setMaximum(10000);
-    ui->maxHeight->setValue(GlobalSettings::getInstance()->getMaxHeight());
+    ui->maxHeight->setMaximum(1000);
+    ui->maxHeight->setValue(GlobalSettings::getInstance()->getMaxHeight() / 10);
 
     ui->minHeight->setMinimum(0);
-    ui->minHeight->setMaximum(10000);
-    ui->minHeight->setValue(GlobalSettings::getInstance()->getMinHeight());
+    ui->minHeight->setMaximum(1000);
+    ui->minHeight->setValue(GlobalSettings::getInstance()->getMinHeight() / 10);
 
     ui->diffuse->setMinimum(0);
     ui->diffuse->setMaximum(100);
-    ui->diffuse->setValue(100);
+    ui->diffuse->setValue(GlobalSettings::getInstance()->getLightIntensity());
 
     ui->minHeightValue->setText(QString::number(ui->minHeight->value()));
     ui->maxHeightValue->setText(QString::number(ui->maxHeight->value()));
@@ -78,13 +70,6 @@ Settings::Settings(QWidget *parent) :
     ui->stoneMax->setValue(GlobalSettings::getInstance()->getStoneMax());
     ui->stoneMaxLabel->setText(QString::number(ui->stoneMax->value()));
 
-    connect(ui->direction_Z, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionZ(int)));
-    connect(ui->direction_Y, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionY(int)));
-    connect(ui->direction_X, SIGNAL(sliderMoved(int)), this, SLOT(setLightDirectionX(int)));
-    connect(ui->color_R,     SIGNAL(sliderMoved(int)), this, SLOT(setLightColorR(int)));
-    connect(ui->color_G,     SIGNAL(sliderMoved(int)), this, SLOT(setLightColorG(int)));
-    connect(ui->color_B,     SIGNAL(sliderMoved(int)), this, SLOT(setLightColorB(int)));
-
     connect(ui->maxHeight, SIGNAL(sliderMoved(int)), this, SLOT(setKinectMaxHeight(int)));
     connect(ui->minHeight, SIGNAL(sliderMoved(int)), this, SLOT(setKinectMinHeight(int)));
 
@@ -93,8 +78,7 @@ Settings::Settings(QWidget *parent) :
 
     connect(ui->contrast, SIGNAL(sliderMoved(int)), this, SLOT(setContrast(int)));
 
-    connect(ui->flip_hor, SIGNAL(stateChanged(int)), this, SLOT(setHorisontalFlip(int)));
-    connect(ui->flip_vert, SIGNAL(stateChanged(int)), this, SLOT(setVerticalFlip(int)));
+
 
     connect(ui->loadWater, SIGNAL(pressed()), this, SLOT(setWaterTexture()));
     connect(ui->loadSand, SIGNAL(pressed()), this, SLOT(setSandTexture()));
@@ -116,13 +100,25 @@ Settings::Settings(QWidget *parent) :
     ui->imgSkyboxBack->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/back.bmp")));
 
 
-    connect(ui->comboBox, SIGNAL(activated(int)), this, SLOT(changeTerrain(int)));
-    connect(ui->resolution, SIGNAL(activated(int)), this, SLOT(setResolution(int)));
+    connect(ui->terrainTextures, SIGNAL(activated(int)), this, SLOT(changeTerrain(int)));
+
 
     connect(ui->waterMax, SIGNAL(sliderMoved(int)), this, SLOT(setWaterMax(int)));
     connect(ui->sandMax, SIGNAL(sliderMoved(int)), this, SLOT(setSandMax(int)));
     connect(ui->grassMax, SIGNAL(sliderMoved(int)), this, SLOT(setGrassMax(int)));
     connect(ui->stoneMax, SIGNAL(sliderMoved(int)), this, SLOT(setStoneMax(int)));
+
+    connect(ui->reset, SIGNAL(clicked(bool)), this, SLOT(resetSettings()));
+
+    connect(ui->changeSkybox, SIGNAL(activated(int)), this, SLOT(changeSkybox(int)));
+
+
+    connect(ui->loadSkyboxLeft, SIGNAL(pressed()), this, SLOT(setSkyboxLeft()));
+    connect(ui->loadSkyboxRight, SIGNAL(pressed()), this, SLOT(setSkyboxRight()));
+    connect(ui->loadSkyboxTop, SIGNAL(pressed()), this, SLOT(setSkyboxTop()));
+    connect(ui->loadSkyboxBottom, SIGNAL(pressed()), this, SLOT(setSkyboxBottom()));
+    connect(ui->loadSkyboxFront, SIGNAL(pressed()), this, SLOT(setSkyboxFront()));
+    connect(ui->loadSkyboxBack, SIGNAL(pressed()), this, SLOT(setSkyboxBack()));
 
     ui->loadGrass->hide();
     ui->loadSand->hide();
@@ -130,11 +126,201 @@ Settings::Settings(QWidget *parent) :
     ui->loadStone->hide();
     ui->loadWater->hide();
 
+    ui->loadSkyboxLeft->hide();
+    ui->loadSkyboxRight->hide();
+    ui->loadSkyboxTop->hide();
+    ui->loadSkyboxBottom->hide();
+    ui->loadSkyboxFront->hide();
+    ui->loadSkyboxBack->hide();
+
+    bool toFlipVertically = GlobalSettings::getInstance()->getFlipVertical();
+    if (toFlipVertically)
+        ui->flip_vert->setCheckState(Qt::Checked);
+
+    bool toFlipHorisontally = GlobalSettings::getInstance()->getFlipHorisontal();
+    if (toFlipHorisontally)
+        ui->flip_hor->setCheckState(Qt::Checked);
+
+
+
+
+    bool sensorMode = GlobalSettings::getInstance()->getSensorMode();
+    qDebug() << "SensorMode: " << sensorMode;
+
+    if (!sensorMode)
+    {
+        QPalette palette = ui->pleaseConnect->palette();
+        palette.setColor(ui->pleaseConnect->foregroundRole(), Qt::red);
+        ui->pleaseConnect->setPalette(palette);
+        ui->pleaseConnect->setText("Please, connect depth sensor to get access to these settings");
+
+        ui->flip_hor->setDisabled(true);
+        ui->flip_vert->setDisabled(true);
+        ui->minHeight->setDisabled(true);
+        ui->maxHeight->setDisabled(true);
+
+    }
+
+    else
+        ui->pleaseConnect->hide();
+
+    colorDialog = new QColorDialog(this);
+
+    connect(ui->chooseColor, SIGNAL(pressed()), this, SLOT(chooseColor()));
+    connect(ui->setDirection, SIGNAL(pressed()), this, SLOT(setDirection()));
+
+    lightDirection = new LightDirection(this);
+    int window_width = GlobalSettings::getInstance()->getScreenWidth();
+    int window_height = GlobalSettings::getInstance()->getScreenHeight();
+    lightDirection->resize(window_width / 3, window_height / 3);
+
+    connect(ui->flip_hor, SIGNAL(toggled(bool)), this, SLOT(setHorisontalFlip(bool)));
+    connect(ui->flip_vert, SIGNAL(toggled(bool)), this, SLOT(setVerticalFlip(bool)));
+
+
+
+}
+
+void Settings::setDirection()
+{
+
+    lightDirection->setPixmap();
+    lightDirection->show();
+
+}
+
+void Settings::chooseColor()
+{
+    QColorDialog* d = new QColorDialog(this);
+    QColor color = d->getColor(Qt::white, this, "LightColor");
+    Scene::getInstance()->lighting->dirLight.setColorR(color.redF());
+    Scene::getInstance()->lighting->dirLight.setColorG(color.greenF());
+    Scene::getInstance()->lighting->dirLight.setColorB(color.blueF());
+    GlobalSettings::getInstance()->setLightColorR(color.redF() * 100);
+    GlobalSettings::getInstance()->setLightColorG(color.greenF() * 100);
+    GlobalSettings::getInstance()->setLightColorB(color.blueF() * 100);
 }
 
 Settings::~Settings()
 {
     delete ui;
+}
+
+void Settings::resetSettings()
+{
+    GlobalSettings::getInstance()->setMinHeight(560);
+    Scene::getInstance()->terrain->stream->setMinDepth(560);
+
+    GlobalSettings::getInstance()->setMaxHeight(640);
+    Scene::getInstance()->terrain->stream->setMaxDepth(640);
+
+    GlobalSettings::getInstance()->setHorisontalFlip(false);
+    Scene::getInstance()->terrain->stream->setHorisontalFlip(false);
+
+    GlobalSettings::getInstance()->setVerticalFlip(false);
+    Scene::getInstance()->terrain->stream->setVerticalFlip(false);
+
+    GlobalSettings::getInstance()->setWaterMax(50);
+    Scene::getInstance()->terrain->setWaterMax(50);
+
+    GlobalSettings::getInstance()->setSandMax(100);
+    Scene::getInstance()->terrain->setSandMax(100);
+
+    GlobalSettings::getInstance()->setGrassMax(150);
+    Scene::getInstance()->terrain->setGrassMax(150);
+
+    GlobalSettings::getInstance()->setStoneMax(200);
+    Scene::getInstance()->terrain->setStoneMax(200);
+
+    Scene::getInstance()->terrain->setAlpha(1.5);
+    Scene::getInstance()->terrain->setBeta(0.25);
+
+    GlobalSettings::getInstance()->setLightDirectionX(10);
+    GlobalSettings::getInstance()->setLightDirectionY(100);
+    GlobalSettings::getInstance()->setLightDirectionZ(10);
+    GlobalSettings::getInstance()->setLightColorR(100);
+    GlobalSettings::getInstance()->setLightColorG(100);
+    GlobalSettings::getInstance()->setLightColorB(100);
+    GlobalSettings::getInstance()->setLightIntensity(100);
+    Scene::getInstance()->lighting->dirLight.setDirectionX(0.1);
+    Scene::getInstance()->lighting->dirLight.setDirectionY(1.0);
+    Scene::getInstance()->lighting->dirLight.setDirectionZ(0.1);
+    Scene::getInstance()->lighting->dirLight.setColorR(1.0);
+    Scene::getInstance()->lighting->dirLight.setColorG(1.0);
+    Scene::getInstance()->lighting->dirLight.setColorB(1.0);
+    Scene::getInstance()->lighting->dirLight.setDiffuseIntensity(1.0);
+
+    ui->waterMax->setValue(50);
+    ui->sandMax->setValue(100);
+    ui->grassMax->setValue(150);
+    ui->stoneMax->setValue(200);
+
+    ui->waterMaxLabel->setText(QString::number(ui->waterMax->value()));
+    ui->sandMaxLabel->setText(QString::number(ui->sandMax->value()));
+    ui->grassMaxLabel->setText(QString::number(ui->grassMax->value()));
+    ui->stoneMaxLabel->setText(QString::number(ui->stoneMax->value()));
+
+
+
+
+    ui->waterImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/water.bmp")));
+    ui->sandImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/sand.bmp")));
+    ui->grassImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/grass.bmp")));
+    ui->stoneImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/stone.bmp")));
+    ui->snowImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/snow.bmp")));
+
+    ui->imgSkyboxLeft->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/left.bmp")));
+    ui->imgSkyboxRight->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/right.bmp")));
+    ui->imgSkyboxTop->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/top.bmp")));
+    ui->imgSkyboxBottom->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/bottom.bmp")));
+    ui->imgSkyboxFront->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/front.bmp")));
+    ui->imgSkyboxBack->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/sea/back.bmp")));
+
+    Scene::getInstance()->terrain->setWaterTexture("/home/maxim/sandbox_mat/terrain/water.bmp");
+    Scene::getInstance()->terrain->setSandTexture("/home/maxim/sandbox_mat/terrain/sand.bmp");
+    Scene::getInstance()->terrain->setGrassTexture("/home/maxim/sandbox_mat/terrain/grass.bmp");
+    Scene::getInstance()->terrain->setStoneTexture("/home/maxim/sandbox_mat/terrain/stone.bmp");
+    Scene::getInstance()->terrain->setSnowTexture("/home/maxim/sandbox_mat/terrain/snow.bmp");
+
+    Scene::getInstance()->skybox->setLeft("/home/maxim/sandbox_mat/sea/left.bmp");
+    Scene::getInstance()->skybox->setRight("/home/maxim/sandbox_mat/sea/right.bmp");
+    Scene::getInstance()->skybox->setTop("/home/maxim/sandbox_mat/sea/top.bmp");
+    Scene::getInstance()->skybox->setBottom("/home/maxim/sandbox_mat/sea/bottom.bmp");
+    Scene::getInstance()->skybox->setFront("/home/maxim/sandbox_mat/sea/front.bmp");
+    Scene::getInstance()->skybox->setBack("/home/maxim/sandbox_mat/sea/back.bmp");
+
+
+    ui->terrainTextures->setCurrentIndex(0);
+    ui->changeSkybox->setCurrentIndex(0);
+
+    ui->diffuse->setValue(100);
+
+
+
+
+}
+
+void Settings::changeSkybox(int index)
+{
+    if (index == 2)
+    {
+        ui->loadSkyboxLeft->show();
+        ui->loadSkyboxRight->show();
+        ui->loadSkyboxTop->show();
+        ui->loadSkyboxBottom->show();
+        ui->loadSkyboxFront->show();
+        ui->loadSkyboxBack->show();
+    }
+
+    else
+    {
+        ui->loadSkyboxLeft->hide();
+        ui->loadSkyboxRight->hide();
+        ui->loadSkyboxTop->hide();
+        ui->loadSkyboxBottom->hide();
+        ui->loadSkyboxFront->hide();
+        ui->loadSkyboxBack->hide();
+    }
 }
 
 void Settings::setWaterMax(int waterMax)
@@ -165,8 +351,10 @@ void Settings::setStoneMax(int stoneMax)
     GlobalSettings::getInstance()->setStoneMax(stoneMax);
 }
 
-void Settings::setResolution(int)
+void Settings::setResolution(int index)
 {
+    if (index == 1)
+        Scene::getInstance()->changeTerrain();
 }
 
 void Settings::changeTerrain(int index)
@@ -207,8 +395,11 @@ void Settings::setSandTexture()
     QString filename = QFileDialog::getOpenFileName(this,
                                             tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
 
-    Scene::getInstance()->terrain->setSandTexture((char*)filename.toStdString().c_str());
-    ui->sandImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->terrain->setSandTexture((char*)filename.toStdString().c_str());
+        ui->sandImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
 }
 
 void Settings::setGrassTexture()
@@ -216,8 +407,11 @@ void Settings::setGrassTexture()
     QString filename = QFileDialog::getOpenFileName(this,
                                             tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
 
-    Scene::getInstance()->terrain->setGrassTexture((char*)filename.toStdString().c_str());
-    ui->grassImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->terrain->setGrassTexture((char*)filename.toStdString().c_str());
+        ui->grassImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
 }
 
 void Settings::setStoneTexture()
@@ -225,8 +419,11 @@ void Settings::setStoneTexture()
     QString filename = QFileDialog::getOpenFileName(this,
                                             tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
 
-    Scene::getInstance()->terrain->setStoneTexture((char*)filename.toStdString().c_str());
-    ui->stoneImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->terrain->setStoneTexture((char*)filename.toStdString().c_str());
+        ui->stoneImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
 }
 
 void Settings::setSnowTexture()
@@ -234,61 +431,115 @@ void Settings::setSnowTexture()
     QString filename = QFileDialog::getOpenFileName(this,
                                             tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
 
-    Scene::getInstance()->terrain->setSnowTexture((char*)filename.toStdString().c_str());
-    ui->snowImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->terrain->setSnowTexture((char*)filename.toStdString().c_str());
+        ui->snowImg->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
 }
 
-void Settings::setLightDirectionZ(int z)
+void Settings::setSkyboxLeft()
 {
-    Scene::getInstance()->lighting->dirLight.setDirectionZ(float(z/100.0));
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->skybox->setLeft((char*)filename.toStdString().c_str());
+
+        ui->imgSkyboxLeft->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
+
 }
 
-void Settings::setLightDirectionY(int y)
+void Settings::setSkyboxRight()
 {
-    Scene::getInstance()->lighting->dirLight.setDirectionY(float(y/100.0));
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    if (!filename.isEmpty())
+    {
+
+       Scene::getInstance()->skybox->setRight((char*)filename.toStdString().c_str());
+        ui->imgSkyboxRight->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
+
 }
 
-
-void Settings::setLightDirectionX(int x)
+void Settings::setSkyboxTop()
 {
-    Scene::getInstance()->lighting->dirLight.setDirectionX(float(x/100.0));
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->skybox->setTop((char*)filename.toStdString().c_str());
+        ui->imgSkyboxTop->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
+
 }
 
-void Settings::setLightColorR(int r)
+void Settings::setSkyboxBottom()
 {
-    Scene::getInstance()->lighting->dirLight.setColorR(float(r/100.0));
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->skybox->setBottom((char*)filename.toStdString().c_str());
+        ui->imgSkyboxBottom->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
+
 }
 
-void Settings::setLightColorG(int g)
+void Settings::setSkyboxFront()
 {
-    Scene::getInstance()->lighting->dirLight.setColorG(float(g/100.0));
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->skybox->setFront((char*)filename.toStdString().c_str());
+        ui->imgSkyboxFront->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
+
 }
 
-
-void Settings::setLightColorB(int b)
+void Settings::setSkyboxBack()
 {
-    Scene::getInstance()->lighting->dirLight.setColorB(float(b/100.0));
+    QString filename = QFileDialog::getOpenFileName(this,
+                                            tr("Open Image"), "/home/maxim/", tr("Image Files (*.bmp)"));
+
+    if (!filename.isEmpty())
+    {
+        Scene::getInstance()->skybox->setBack((char*)filename.toStdString().c_str());
+        ui->imgSkyboxBack->setPixmap(QPixmap::fromImage(QImage(filename)));
+    }
+
 }
+
+
 
 void Settings::setLightDiffuseIntensity(int d)
 {
     Scene::getInstance()->lighting->dirLight.setDiffuseIntensity(float(d/100.0));
+    GlobalSettings::getInstance()->setLightIntensity(d);
 }
 
 
 void Settings::setKinectMaxHeight(int maxHeight)
 {
    ui->maxHeightValue->setText(QString::number(ui->maxHeight->value()));
-   GlobalSettings::getInstance()->setMaxHeight(maxHeight);
-   Scene::getInstance()->terrain->stream->setMaxDepth(maxHeight);
+   GlobalSettings::getInstance()->setMaxHeight(maxHeight * 10);
+   Scene::getInstance()->terrain->stream->setMaxDepth(maxHeight * 10);
 }
 
 
 void Settings::setKinectMinHeight(int minHeight)
 {
     ui->minHeightValue->setText(QString::number(ui->minHeight->value()));
-    GlobalSettings::getInstance()->setMinHeight(minHeight);
-    Scene::getInstance()->terrain->stream->setMinDepth(minHeight);
+    GlobalSettings::getInstance()->setMinHeight(minHeight * 10);
+    Scene::getInstance()->terrain->stream->setMinDepth(minHeight * 10);
 }
 
 
@@ -301,19 +552,32 @@ void Settings::setContrast(int contrast)
     Scene::getInstance()->terrain->setAlpha(alpha);
 }
 
-void Settings::setHorisontalFlip(int state)
+void Settings::setHorisontalFlip(bool checked)
 {
-    if (state != 0)
+    if (checked)
+    {
         Scene::getInstance()->terrain->stream->setHorisontalFlip(true);
+        GlobalSettings::getInstance()->setHorisontalFlip(true);
+    }
     else
+    {
         Scene::getInstance()->terrain->stream->setHorisontalFlip(false);
+        GlobalSettings::getInstance()->setHorisontalFlip(false);
+    }
 }
 
-void Settings::setVerticalFlip(int state)
+void Settings::setVerticalFlip(bool checked)
 {
-    if (state != 0)
+    qDebug() << checked;
+    if (checked)
+    {
         Scene::getInstance()->terrain->stream->setVerticalFlip(true);
+        GlobalSettings::getInstance()->setVerticalFlip(true);
+    }
     else
+    {
         Scene::getInstance()->terrain->stream->setVerticalFlip(false);
+        GlobalSettings::getInstance()->setVerticalFlip(false);
+    }
 }
 
