@@ -16,8 +16,14 @@ Crop::Crop(QWidget *parent) :
     isAreaSelected = false;
 
     ui->finish->setAutoDefault(false);
+    ui->setDefault->setAutoDefault(false);
 
+    ui->left->setText(QString::number(0));
+    ui->right->setText(QString::number(0));
+    ui->top->setText(QString::number(0));
+    ui->bottom->setText(QString::number(0));
 
+    connect(ui->setDefault, SIGNAL(pressed()), this, SLOT(setDefaultCropping()));
 }
 
 Crop::~Crop()
@@ -28,6 +34,28 @@ Crop::~Crop()
 void Crop::quit()
 {
     emit croppingClosed();
+}
+
+void Crop::setDefaultCropping()
+{
+    offsetLeft = 50;
+    offsetRight = 50;
+    offsetTop = 50;
+    offsetBottom = 50;
+    ui->left->setText(QString::number(offsetLeft));
+    ui->right->setText(QString::number(offsetRight));
+    ui->top->setText(QString::number(offsetTop));
+    ui->bottom->setText(QString::number(offsetBottom));
+
+    int left = image->topLeft().x() + offsetLeft;
+    int top = image->topLeft().y() + offsetTop;
+    int width = image->width() - offsetLeft - offsetRight;
+    int height = image->height() - offsetTop - offsetBottom;
+    cropping = QRect(left, top, width ,height);
+
+    toDraw = true;
+
+    repaint();
 }
 
 void Crop::setup()
@@ -99,7 +127,6 @@ void Crop::paintEvent(QPaintEvent *event)
         toDraw = false;
     }
     painter.end();
-
 }
 
 
@@ -111,6 +138,10 @@ void Crop::mousePressEvent(QMouseEvent *event)
     offsetRight = 0;
     offsetTop = 0;
     offsetBottom = 0;
+    ui->left->setText(QString::number(offsetLeft));
+    ui->right->setText(QString::number(offsetRight));
+    ui->top->setText(QString::number(offsetTop));
+    ui->bottom->setText(QString::number(offsetBottom));
 
     bool cont = image->contains(origin);
     if (cont)
@@ -157,9 +188,13 @@ void Crop::mouseReleaseEvent(QMouseEvent *event)
             offsetTop = cropping.topLeft().y() - image->topLeft().y();
             offsetBottom = image->bottomRight().y() - cropping.bottomRight().y();
 
+            ui->left->setText(QString::number(offsetLeft));
+            ui->right->setText(QString::number(offsetRight));
+            ui->top->setText(QString::number(offsetTop));
+            ui->bottom->setText(QString::number(offsetBottom));
+
             isAreaSelected = true;
         }
 
     repaint();
-
 }

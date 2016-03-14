@@ -7,7 +7,11 @@
 InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth, int _offsetLeft, int _offsetRight, int _offsetTop, int _offsetBottom)
 {
     rc_depth = openni::OpenNI::initialize();
-    deviceURI = openni::ANY_DEVICE;
+    openni::Array<openni::DeviceInfo> list;
+    openni::OpenNI::enumerateDevices(&list);
+    deviceURI = list[0].getUri();
+
+    qDebug() << "DEVICE NAME: " << list[0].getName();
     width = _width;
     height = _height;
     history_capacity = 10;
@@ -23,12 +27,12 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     current = 0;
     frame = new VideoFrameRef;
 
-   toFlipVertically = GlobalSettings::getInstance()->getFlipVertical();
-   toFlipHorisontally = GlobalSettings::getInstance()->getFlipHorisontal();
-   offsetLeft = _offsetLeft;
-   offsetRight = _offsetRight;
-   offsetTop = _offsetTop;
-   offsetBottom = _offsetBottom;
+    toFlipVertically = GlobalSettings::getInstance()->getFlipVertical();
+    toFlipHorisontally = GlobalSettings::getInstance()->getFlipHorisontal();
+    offsetLeft = _offsetLeft;
+    offsetRight = _offsetRight;
+    offsetTop = _offsetTop;
+    offsetBottom = _offsetBottom;
 
    raw_mat.create(height, width, CV_8UC3);
 
@@ -50,9 +54,6 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
    initialize();
 
    qDebug() << "initialized";
-
-
-
 }
 
 void InputStream::setVerticalFlip(bool _toFlipVertically)
@@ -92,13 +93,17 @@ bool InputStream::isSensorConnected()
 
 void InputStream::initialize()
 {
-    rc_depth = device.open(deviceURI);
+    device.open(deviceURI);
 
     device.setDepthColorSyncEnabled(true);
 
-    rc_depth = depth.create(device, openni::SENSOR_DEPTH);
+    depth.create(device, openni::SENSOR_DEPTH);
 
-    rc_depth = depth.start();
+
+
+    openni::Status status = depth.start();
+
+
 
 }
 
@@ -194,17 +199,23 @@ unsigned char* InputStream::getData()
 }
 
 
-bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth)
+void InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth)
 {
 
+
     unsigned short data = 0;
-    rc_depth = depth.readFrame(frame);
+    VideoFrameRef r;
+    qDebug() << "WE ARE HERE";
+    openni::Status status = depth.readFrame(&r);
+    if (status == openni::STATUS_OK)
+        qDebug() << "DEPTH WAS STARTED";
+
+    qDebug() << "FRAME READ";
 
     int min_depth = _min_depth;
     int max_depth = _max_depth;
 
-
-    openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
+    openni::DepthPixel* pDepth = (openni::DepthPixel*)r.getData();
 
     for (int i = 0; i < size; i++)
     {
@@ -214,8 +225,6 @@ bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
         if (data < min_depth) data = min_depth;
         dst[i] = (unsigned char)((float)(data - min_depth) / (max_depth - min_depth) * MAXDEPTH);
     }
-
-    return true;
 }
 
 

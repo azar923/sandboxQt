@@ -160,7 +160,7 @@ Settings::Settings(QWidget *parent) :
         ui->flip_vert->setDisabled(true);
         ui->minHeight->setDisabled(true);
         ui->maxHeight->setDisabled(true);
-
+        ui->reconfigure->setDisabled(true);
     }
 
     else

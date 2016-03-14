@@ -45,7 +45,7 @@ private:
 
     void filterStatistic(int data_delta);
 
-    bool GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth);
+    void GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth);
 
 
     bool toFlipVertically;

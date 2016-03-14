@@ -68,6 +68,7 @@ signals:
 public slots:
     void finished();
     void quit();
+    void setDefaultCropping();
 };
 
 #endif // CROP_H

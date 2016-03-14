@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     if (firstTime && isSensorConnected)
     {
         s = new SensorCalibration;
-        GlobalSettings::getInstance()->setFirstTime(false);
+      //  GlobalSettings::getInstance()->setFirstTime(false);
         GlobalSettings::getInstance()->setSensorMode(true);
         s->show();
     }
