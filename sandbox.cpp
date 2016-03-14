@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QColorDialog>
+#include <QMessageBox>
 
 
 Sandbox::Sandbox(QWidget *parent) :
@@ -38,6 +39,14 @@ Sandbox::Sandbox(QWidget *parent) :
     ui->start->move(this->width() * 0.5, this->height() * 0.8);
 
     isRolledUp = false;
+
+    if (!GlobalSettings::getInstance()->getSensorMode())
+    {
+        QMessageBox* box = new QMessageBox(this);
+        box->setText("There is no sensor connected. Please, connect depth sensor and try to start program again");
+        box->setWindowTitle("No sensor connected");
+        box->show();
+    }
 
     showFullScreen();
 

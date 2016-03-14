@@ -16,7 +16,7 @@ class InputStream : public DataStream
 public:
     InputStream(int _width, int _height, int _min_depth, int _max_depth, int _offsetLeft = 0, int _offsetRight = 0, int _offsetTop = 0, int _offsetBottom = 0);
     unsigned char* getData();
-    bool initialize();
+    void initialize();
     static bool isSensorConnected();
     void setMaxDepth(int maxDepth);
     void setMinDepth(int minDepth);
@@ -32,7 +32,7 @@ private:
     openni::Device device;
     openni::VideoStream depth;
     const char* deviceURI;
-    openni::VideoFrameRef frame;
+    openni::VideoFrameRef* frame;
     openni::VideoMode videomode;
 
 

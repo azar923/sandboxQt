@@ -114,7 +114,7 @@ void SensorSettings::next()
 
 void SensorSettings::setResolution(int option)
 {
-    if (option == 0)
+    if (option == 1)
     {
         width = 640;
         height = 480;
@@ -127,7 +127,7 @@ void SensorSettings::setResolution(int option)
         qDebug() << "res = 640";
     }
 
-    else
+  /*  else
     {
         width = 320;
         height = 240;
@@ -138,5 +138,5 @@ void SensorSettings::setResolution(int option)
 
         GlobalSettings::getInstance()->setWidth(width);
         GlobalSettings::getInstance()->setHeight(height);
-    }
+    }*/
 }

@@ -22,13 +22,11 @@ private:
     Ui::SensorCalibration *ui;
 
     Sandbox* sandbox;
-
-
     bool isConnected;
-
     SensorSettings* settings;
 
     bool isSandboxCreated;
+
 
 public slots:
     void createSandbox();

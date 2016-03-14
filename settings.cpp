@@ -2,6 +2,7 @@
 #include "ui_settings.h"
 #include "globalsettings.h"
 #include <QFileDialog>
+#include <QMessageBox>
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -24,6 +25,7 @@ Settings::Settings(QWidget *parent) :
     ui->loadSkyboxFront->setAutoDefault(false);
     ui->loadSkyboxBack->setAutoDefault(false);
     ui->reset->setAutoDefault(false);
+    ui->reconfigure->setAutoDefault(false);
 
 
     ui->maxHeight->setMinimum(0);
@@ -44,7 +46,7 @@ Settings::Settings(QWidget *parent) :
 
     ui->contrast->setMinimum(0);
     ui->contrast->setMaximum(100);
-    ui->contrast->setValue(50);
+    ui->contrast->setValue(GlobalSettings::getInstance()->getContrast());
     ui->contrastValue->setText(QString::number(ui->contrast->value()));
 
     ui->waterMax->setMinimum(0);
@@ -177,8 +179,17 @@ Settings::Settings(QWidget *parent) :
     connect(ui->flip_hor, SIGNAL(toggled(bool)), this, SLOT(setHorisontalFlip(bool)));
     connect(ui->flip_vert, SIGNAL(toggled(bool)), this, SLOT(setVerticalFlip(bool)));
 
+    connect(ui->reconfigure, SIGNAL(pressed()), this, SLOT(reconfigure()));
 
+}
 
+void Settings::reconfigure()
+{
+    QMessageBox* box = new QMessageBox(this);
+    box->setText("You will be able to reconfigure your sensor after next start of this program");
+    box->show();
+    box->setWindowTitle("Reconfigure sensor");
+    GlobalSettings::getInstance()->setFirstTime(true);
 }
 
 void Settings::setDirection()
@@ -259,6 +270,16 @@ void Settings::resetSettings()
     ui->sandMaxLabel->setText(QString::number(ui->sandMax->value()));
     ui->grassMaxLabel->setText(QString::number(ui->grassMax->value()));
     ui->stoneMaxLabel->setText(QString::number(ui->stoneMax->value()));
+
+    ui->contrast->setValue(50);
+    GlobalSettings::getInstance()->setContrast(50);
+
+    ui->contrastValue->setText(QString::number(50));
+    float alpha = 1.0 + float(50) * 0.02;
+    float beta = float(50) / 100.0;
+    Scene::getInstance()->terrain->setBeta(beta);
+    Scene::getInstance()->terrain->setAlpha(alpha);
+
 
 
 
@@ -545,6 +566,7 @@ void Settings::setKinectMinHeight(int minHeight)
 
 void Settings::setContrast(int contrast)
 {
+    GlobalSettings::getInstance()->setContrast(contrast);
     ui->contrastValue->setText(QString::number(contrast));
     float alpha = 1.0 + float(contrast) * 0.02;
     float beta = float(contrast) / 100.0;

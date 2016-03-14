@@ -65,6 +65,8 @@ private slots:
 
     void setDirection();
 
+    void reconfigure();
+
 };
 
 #endif // SETTINGS_H

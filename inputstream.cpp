@@ -21,6 +21,7 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     min_depth = _min_depth;
     max_depth = _max_depth;
     current = 0;
+    frame = new VideoFrameRef;
 
    toFlipVertically = GlobalSettings::getInstance()->getFlipVertical();
    toFlipHorisontally = GlobalSettings::getInstance()->getFlipHorisontal();
@@ -43,9 +44,12 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
         history[i] = 0;
         average[i] = 0;
    }
+   qDebug() << "Input stream is created";
 
 
    initialize();
+
+   qDebug() << "initialized";
 
 
 
@@ -86,7 +90,7 @@ bool InputStream::isSensorConnected()
 
 }
 
-bool InputStream::initialize()
+void InputStream::initialize()
 {
     rc_depth = device.open(deviceURI);
 
@@ -94,20 +98,8 @@ bool InputStream::initialize()
 
     rc_depth = depth.create(device, openni::SENSOR_DEPTH);
 
-        if (rc_depth == openni::STATUS_OK) {
-            videomode = depth.getVideoMode();
-            videomode.setResolution(width, height);
-            depth.setVideoMode(videomode);
-            rc_depth= depth.start();
+    rc_depth = depth.start();
 
-            return true;
-        }
-
-        else
-        {
-            std::cout << "Failed to initialize sensor";
-            return false;
-        }
 }
 
 void InputStream::setMaxDepth(int maxDepth)
@@ -204,14 +196,15 @@ unsigned char* InputStream::getData()
 
 bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth)
 {
+
     unsigned short data = 0;
-    rc_depth = depth.readFrame(&frame);
+    rc_depth = depth.readFrame(frame);
 
     int min_depth = _min_depth;
     int max_depth = _max_depth;
 
-    if (rc_depth == openni::STATUS_OK) {
-        openni::DepthPixel* pDepth = (openni::DepthPixel*)frame.getData();
+
+    openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
 
     for (int i = 0; i < size; i++)
     {
@@ -223,22 +216,16 @@ bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
     }
 
     return true;
-    }
-
-    else
-    {
-        return false;
-    }
-
 }
+
 
 Mat InputStream::getRawMat()
 {
     unsigned short data = 0;
-    rc_depth = depth.readFrame(&frame);
+    rc_depth = depth.readFrame(frame);
 
-    if (rc_depth == openni::STATUS_OK) {
-        openni::DepthPixel* pDepth = (openni::DepthPixel*)frame.getData();
+
+        openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
     for (int i = 0; i < width * height; i++)
     {
         data = pDepth[i];
@@ -259,8 +246,8 @@ Mat InputStream::getRawMat()
         }
 
     return raw_mat;
-    }
 }
+
 
 void InputStream::Terminate()
 {

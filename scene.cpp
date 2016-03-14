@@ -6,10 +6,8 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 
-
-
-
 Scene* Scene::singleton = 0;
+
 Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 {
     initializeOpenGLFunctions();
@@ -39,8 +37,10 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 
     skybox = new Skybox;
 
-    bool isSensorMode = GlobalSettings::getInstance()->getSensorMode();
-    if (isSensorMode)
+    bool isSensorConnected = GlobalSettings::getInstance()->getSensorMode();
+
+
+    if (isSensorConnected)
     {
         int terrain_width = GlobalSettings::getInstance()->getWidth();
         int terrain_height = GlobalSettings::getInstance()->getHeight();
@@ -64,7 +64,6 @@ Scene::Scene(int _WINDOW_WIDTH, int _WINDOW_HEIGHT)
 
     technique = new ShaderTechnique("/home/maxim/sandbox/shaders/scene.vert","/home/maxim/sandbox/shaders/scene.frag" );
 
- //   sandboxView = new Mat(WINDOW_HEIGHT, WINDOW_WIDTH, CV_8UC4);
 }
 
 
@@ -143,11 +142,6 @@ void Scene::render()
 
     terrain->render(pipeline, camera, lighting, WINDOW_WIDTH, WINDOW_HEIGHT);
     skybox->render(pipeline, camera, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-
-
-
-
 }
 
 Mat* Scene::getSandboxView()

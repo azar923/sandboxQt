@@ -5,6 +5,7 @@
 #include "crop.h"
 #include "globalsettings.h"
 #include <QDesktopWidget>
+#include <QMessageBox>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -19,18 +20,24 @@ int main(int argc, char *argv[])
     GlobalSettings::getInstance()->setScreenHeight(screenHeight);
 
     bool firstTime = GlobalSettings::getInstance()->getFirstTime();
+    bool isSensorConnected = InputStream::isSensorConnected();
 
-    qDebug() << "First";
-
-    if (firstTime)
+    if (firstTime && isSensorConnected)
     {
         s = new SensorCalibration;
-        //GlobalSettings::getInstance()->setFirstTime(false);
-
+        GlobalSettings::getInstance()->setFirstTime(false);
+        GlobalSettings::getInstance()->setSensorMode(true);
         s->show();
     }
 
-    else
+    else if (isSensorConnected)
+    {
+        GlobalSettings::getInstance()->setSensorMode(true);
+        w = new Sandbox;
+        w -> show();
+    }
+
+    else if (!isSensorConnected)
     {
         w = new Sandbox;
         w -> show();

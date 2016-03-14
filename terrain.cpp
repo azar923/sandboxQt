@@ -28,8 +28,6 @@ void Terrain::setup()
         stream = new InputStream(width, height, GlobalSettings::getInstance()->getMinHeight(), GlobalSettings::getInstance()->getMaxHeight(), offsetLeft, offsetRight, offsetTop, offsetBottom);
         cout << "Kinect stream was created" << endl;
         kinectMode = 1;
-
-
     }
 
     else
@@ -66,8 +64,10 @@ void Terrain::setup()
 
     cout << "Textures were loaded" << endl;
 
-    alpha = 1.5;
-    beta = 0.25;
+    int contrast = GlobalSettings::getInstance()->getContrast();
+
+    alpha = 1.0 + float(contrast) * 0.02;
+    beta = float(contrast) / 100.0;
 
     waterMax = GlobalSettings::getInstance()->getWaterMax();
     sandMax = GlobalSettings::getInstance()->getSandMax();

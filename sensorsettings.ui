@@ -66,12 +66,12 @@
    </property>
    <item>
     <property name="text">
-     <string>640x480</string>
+     <string/>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>320x240</string>
+     <string>640x480</string>
     </property>
    </item>
   </widget>

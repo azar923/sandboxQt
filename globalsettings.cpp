@@ -56,6 +56,7 @@ void GlobalSettings::setConfigFile(const QString filePath)
     lightColorG = settings.at(21);
     lightColorB = settings.at(22);
     lightIntensity = settings.at(23);
+    contrast = settings.at(24);
 
     sensorMode = false;
 }
@@ -140,6 +141,14 @@ int GlobalSettings::getLightIntensity()
     return lightIntensity;
 }
 
+int GlobalSettings::getContrast()
+{
+    return contrast;
+}
+
+
+
+
 void GlobalSettings::writeSpecificAttribute(int numberOfAttribute, QString name, int value)
 {
     QFile file(fileName);
@@ -174,6 +183,8 @@ void GlobalSettings::writeSpecificAttribute(int numberOfAttribute, QString name,
     file.remove();
     temp.rename(fileName);
 }
+
+
 
 void GlobalSettings::setFirstTime(bool isFirstTime)
 {
@@ -320,6 +331,14 @@ void GlobalSettings::setLightIntensity(int _lightIntensity)
     writeSpecificAttribute(23, "lightIntensity", _lightIntensity);
     lightIntensity = _lightIntensity;
 }
+
+void GlobalSettings::setContrast(int _contrast)
+{
+    writeSpecificAttribute(24, "contrast", _contrast);
+    contrast = _contrast;
+}
+
+
 
 int GlobalSettings::getMinHeight()
 {

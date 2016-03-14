@@ -52,7 +52,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>This is your first run, so you need to set up your sensor</string>
+    <string>Now you need to configure your sensor</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
