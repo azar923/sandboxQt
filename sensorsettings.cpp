@@ -105,6 +105,8 @@ void SensorSettings::next()
         sensorStream = new InputStream(width, height,0,10000);
 
         crop->setDepthMap(sensorStream->getRawMat());
+
+
         crop->setup();
 
         crop->show();
@@ -116,15 +118,13 @@ void SensorSettings::setResolution(int option)
 {
     if (option == 1)
     {
-        width = 640;
-        height = 480;
-        x = 190;
+        width = 512;
+        height = 424;
+        x = 230;
         y = 80;
 
         GlobalSettings::getInstance()->setWidth(width);
         GlobalSettings::getInstance()->setHeight(height);
-
-        qDebug() << "res = 640";
     }
 
   /*  else

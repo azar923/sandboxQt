@@ -9,7 +9,7 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     rc_depth = openni::OpenNI::initialize();
     openni::Array<openni::DeviceInfo> list;
     openni::OpenNI::enumerateDevices(&list);
-    deviceURI = list[0].getUri();
+    deviceURI = openni::ANY_DEVICE;
 
     qDebug() << "DEVICE NAME: " << list[0].getName();
     width = _width;
@@ -34,7 +34,7 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     offsetTop = _offsetTop;
     offsetBottom = _offsetBottom;
 
-   raw_mat.create(height, width, CV_8UC3);
+   raw_mat = Mat::zeros(height, width, CV_8UC3);
 
    width_cropped = width - offsetLeft - offsetRight;
    height_cropped = height - offsetTop - offsetBottom;
@@ -95,16 +95,14 @@ void InputStream::initialize()
 {
     device.open(deviceURI);
 
-    device.setDepthColorSyncEnabled(true);
+    const openni::SensorInfo* info = device.getSensorInfo(openni::SENSOR_DEPTH);
+    const openni::Array< openni::VideoMode>& modesDepth = info->getSupportedVideoModes();
 
     depth.create(device, openni::SENSOR_DEPTH);
 
-
+    depth.setVideoMode(modesDepth[0]);
 
     openni::Status status = depth.start();
-
-
-
 }
 
 void InputStream::setMaxDepth(int maxDepth)
@@ -120,6 +118,7 @@ void InputStream::setMinDepth(int minDepth)
 void InputStream::filterStatistic(int data_delta)
 {
     GetDepthData(raw, width * height, min_depth, max_depth);
+
 
     for (int i = 0; i < width * height; i++)
     {
@@ -205,12 +204,8 @@ void InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
 
     unsigned short data = 0;
     VideoFrameRef r;
-    qDebug() << "WE ARE HERE";
-    openni::Status status = depth.readFrame(&r);
-    if (status == openni::STATUS_OK)
-        qDebug() << "DEPTH WAS STARTED";
 
-    qDebug() << "FRAME READ";
+    openni::Status status = depth.readFrame(&r);
 
     int min_depth = _min_depth;
     int max_depth = _max_depth;
@@ -233,13 +228,18 @@ Mat InputStream::getRawMat()
     unsigned short data = 0;
     rc_depth = depth.readFrame(frame);
 
+    int j = 0;
 
-        openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
+
+    openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
     for (int i = 0; i < width * height; i++)
     {
         data = pDepth[i];
         raw[i] = data;
+        j++;
     }
+
+    qDebug() << "J : " << j;
 
     uint16_t max = 0;
 
@@ -247,10 +247,12 @@ Mat InputStream::getRawMat()
         if (raw[i] > max)
             max = raw[i];
 
+
+
     for (int y = 0; y < raw_mat.rows; y++)
         for (int x = 0; x < raw_mat.cols; x++)
         {
-            raw_mat.at<Vec3b>(Point(x,y)) = Vec3b(0, 0, uchar(raw[y * raw_mat.cols + x] * 255.0 / max));
+            raw_mat.at<Vec3b>(Point(x,y)) = Vec3b(0, 0, uchar((float)raw[y * raw_mat.cols + x] * 255.0 / (float)max));
 
         }
 
