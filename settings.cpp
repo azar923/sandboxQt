@@ -80,8 +80,6 @@ Settings::Settings(QWidget *parent) :
 
     connect(ui->contrast, SIGNAL(sliderMoved(int)), this, SLOT(setContrast(int)));
 
-
-
     connect(ui->loadWater, SIGNAL(pressed()), this, SLOT(setWaterTexture()));
     connect(ui->loadSand, SIGNAL(pressed()), this, SLOT(setSandTexture()));
     connect(ui->loadGrass, SIGNAL(pressed()), this, SLOT(setGrassTexture()));
@@ -176,6 +174,7 @@ Settings::Settings(QWidget *parent) :
     int window_height = GlobalSettings::getInstance()->getScreenHeight();
     lightDirection->resize(window_width / 3, window_height / 3);
 
+
     connect(ui->flip_hor, SIGNAL(toggled(bool)), this, SLOT(setHorisontalFlip(bool)));
     connect(ui->flip_vert, SIGNAL(toggled(bool)), this, SLOT(setVerticalFlip(bool)));
 
@@ -195,9 +194,7 @@ void Settings::reconfigure()
 void Settings::setDirection()
 {
 
-    lightDirection->setPixmap();
     lightDirection->show();
-
 }
 
 void Settings::chooseColor()
@@ -284,10 +281,6 @@ void Settings::resetSettings()
     Scene::getInstance()->terrain->setBeta(beta);
     Scene::getInstance()->terrain->setAlpha(alpha);
 
-
-
-
-
     ui->waterImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/water.bmp")));
     ui->sandImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/sand.bmp")));
     ui->grassImg->setPixmap(QPixmap::fromImage(QImage("/home/maxim/sandbox_mat/terrain/grass.bmp")));
@@ -322,9 +315,6 @@ void Settings::resetSettings()
 
     ui->maxHeight->setValue(64);
     ui->minHeight->setValue(56);
-
-
-
 
 }
 

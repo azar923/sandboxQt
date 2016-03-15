@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QColorDialog>
 #include "lightdirection.h"
+#include <QPainter>
+#include <QMouseEvent>
 
 namespace Ui {
 class Settings;
@@ -18,12 +20,13 @@ class Settings : public QDialog
 public:
     explicit Settings(QWidget *parent = 0);
     ~Settings();
+ LightDirection* lightDirection;
 
 private:
     Ui::Settings *ui;
     QFileDialog* d;
     QColorDialog* colorDialog;
-    LightDirection* lightDirection;
+
 
 private slots:
 

@@ -5,6 +5,8 @@
 #include "sandbox.h"
 #include "filestream.h"
 #include "sensorsettings.h"
+#include "crop.h"
+#include "inputstream.h"
 
 namespace Ui {
 class SensorCalibration;
@@ -27,6 +29,15 @@ private:
 
     bool isSandboxCreated;
     int sensorType;
+    Crop* crop;
+    InputStream* sensorStream;
+
+    bool isCroppingSetUp;
+
+    int offsetLeft;
+    int offsetRight;
+    int offsetTop;
+    int offsetBottom;
 
 
 public slots:
@@ -34,6 +45,8 @@ public slots:
     void refresh();
     void setup();
     void quit();
+    void setCropping();
+
 };
 
 #endif // SENSORCALIBRATION_H

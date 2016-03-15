@@ -124,7 +124,6 @@ void SensorSettings::next()
 
         crop->setDepthMap(sensorStream->getRawMat());
 
-
         crop->setup();
 
         crop->show();

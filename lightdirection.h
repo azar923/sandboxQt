@@ -2,6 +2,7 @@
 #define LIGHTDIRECTION_H
 
 #include <QDialog>
+#include <QPainter>
 
 namespace Ui {
 class LightDirection;
@@ -16,9 +17,18 @@ public:
     ~LightDirection();
     void setPixmap();
     void mousePressEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent* event);
+    bool toDraw;
+    bool firstOpen;
+
+    QPoint lightPos;
+
+    QImage* light;
 
 private:
     Ui::LightDirection *ui;
+
+
 };
 
 #endif // LIGHTDIRECTION_H

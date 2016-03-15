@@ -2,6 +2,7 @@
 #include "ui_sensorcalibration.h"
 #include "sandbox.h"
 #include <QFileDialog>
+#include <QMessageBox>
 
 SensorCalibration::SensorCalibration(QWidget *parent) :
     QDialog(parent),
@@ -11,6 +12,19 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
     setWindowTitle("Welcome!");
     isConnected = false;
     isSandboxCreated = false;
+
+    crop = new Crop(this);
+
+    isCroppingSetUp = false;
+
+
+    connect(this->crop, SIGNAL(croppingFinished()), this, SLOT(setCropping()));
+
+
+    offsetLeft = 0;
+    offsetRight = 0;
+    offsetTop = 0;
+    offsetBottom = 0;
 
     ui->option->setVisible(false);
     ui->setup->setVisible(false);
@@ -81,6 +95,35 @@ void SensorCalibration::quit()
     exit(0);
 }
 
+void SensorCalibration::setCropping()
+{
+    qDebug() << "Cropping is set";
+
+    if (crop->isAreaSelected)
+    {
+        offsetLeft = crop->offsetLeft;
+        offsetRight = crop->offsetRight;
+        offsetTop = crop->offsetTop;
+        offsetBottom = crop->offsetBottom;
+    }
+    isCroppingSetUp = true;
+
+    GlobalSettings::getInstance()->setOffsetLeft(offsetLeft);
+    GlobalSettings::getInstance()->setOffsetRight(offsetRight);
+    GlobalSettings::getInstance()->setOffsetTop(offsetTop);
+    GlobalSettings::getInstance()->setOffsetBottom(offsetBottom);
+
+    sensorStream->Terminate();
+
+    GlobalSettings::getInstance()->setSensorMode(true);
+    GlobalSettings::getInstance()->setFirstTime(false);
+
+    QMessageBox* box = new QMessageBox(this);
+    box->setWindowTitle("Finish");
+    box->setText("Sensor is set up!");
+    box->show();
+}
+
 
 
 void SensorCalibration::createSandbox()
@@ -136,6 +179,24 @@ void SensorCalibration::refresh()
 
 void SensorCalibration::setup()
 {
-    settings = new SensorSettings(this);
-    settings->show();
+    if (GlobalSettings::getInstance()->getSensorType() == 1)
+    {
+        crop->setX(230);
+        crop->setY(80);
+    }
+
+    else
+    {
+        crop->setX(190);
+        crop->setY(80);
+    }
+    crop->setHeight(GlobalSettings::getInstance()->getHeight());
+    crop->setWidth(GlobalSettings::getInstance()->getWidth());
+    sensorStream = new InputStream(GlobalSettings::getInstance()->getWidth(), GlobalSettings::getInstance()->getHeight(),0,10000);
+
+    crop->setDepthMap(sensorStream->getRawMat());
+
+    crop->setup();
+
+    crop->show();
 }
