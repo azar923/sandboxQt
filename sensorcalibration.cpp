@@ -14,6 +14,7 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
 
     ui->option->setVisible(false);
     ui->setup->setVisible(false);
+    sensorType = -1;
 
     connect(ui->next, SIGNAL(pressed()), this, SLOT(createSandbox()));
 
@@ -30,7 +31,28 @@ SensorCalibration::SensorCalibration(QWidget *parent) :
         ui->option->setText("Now you can click 'Set up' to adjust sensor settings\n or you can click 'Next' to skip this step and continue with defaults");
         ui->setup->setVisible(true);
         GlobalSettings::getInstance()->setSensorMode(true);
+
+        sensorType = GlobalSettings::getInstance()->getSensorType();
+
+        if (sensorType == 1)
+        {
+            ui->sensorType->setText("Sensor type : Kinect v2");
+            GlobalSettings::getInstance()->setWidth(512);
+            GlobalSettings::getInstance()->setHeight(424);
+            GlobalSettings::getInstance()->setSensorType(sensorType);
+
+        }
+
+        else if (sensorType == 0)
+        {
+            ui->sensorType->setText("Sensor type : Kinect v1");
+            GlobalSettings::getInstance()->setWidth(640);
+            GlobalSettings::getInstance()->setHeight(480);
+            GlobalSettings::getInstance()->setSensorType(sensorType);
+        }
+
     }
+
     else
     {
         palette.setColor(ui->isFound->foregroundRole(), Qt::red);
@@ -89,6 +111,25 @@ void SensorCalibration::refresh()
             ui->option->setText("Now you can click 'Set up' to adjust sensor settings\n or you can click 'Next' to skip this step and continue with defaults");
             ui->setup->setVisible(true);
             GlobalSettings::getInstance()->setSensorMode(true);
+
+            sensorType = GlobalSettings::getInstance()->getSensorType();
+
+            if (sensorType == 1)
+            {
+                ui->sensorType->setText("Sensor type : Kinect v2");
+                GlobalSettings::getInstance()->setWidth(512);
+                GlobalSettings::getInstance()->setHeight(424);
+                GlobalSettings::getInstance()->setSensorType(sensorType);
+
+            }
+
+            else if (sensorType == 0)
+            {
+                ui->sensorType->setText("Sensor type : Kinect v1");
+                GlobalSettings::getInstance()->setWidth(640);
+                GlobalSettings::getInstance()->setHeight(480);
+                GlobalSettings::getInstance()->setSensorType(sensorType);
+            }
         }
     }
 }

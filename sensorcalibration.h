@@ -26,6 +26,7 @@ private:
     SensorSettings* settings;
 
     bool isSandboxCreated;
+    int sensorType;
 
 
 public slots:

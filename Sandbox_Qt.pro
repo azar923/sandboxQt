@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     sensorsettings.cpp \
     crop.cpp \
     globalsettings.cpp \
-    lightdirection.cpp
+    lightdirection.cpp \
+    waitforsensor.cpp
 
 HEADERS  += sandbox.h \
     sandboxwidget.h \
@@ -56,14 +57,16 @@ HEADERS  += sandbox.h \
     sensorsettings.h \
     crop.h \
     globalsettings.h \
-    lightdirection.h
+    lightdirection.h \
+    waitforsensor.h
 
 FORMS    += sandbox.ui \
     settings.ui \
     sensorcalibration.ui \
     sensorsettings.ui \
     crop.ui \
-    lightdirection.ui
+    lightdirection.ui \
+    waitforsensor.ui
 
 LIBS += -lGL -lGLEW -lglut
 

@@ -204,12 +204,16 @@ void Settings::chooseColor()
 {
     QColorDialog* d = new QColorDialog(this);
     QColor color = d->getColor(Qt::white, this, "LightColor");
-    Scene::getInstance()->lighting->dirLight.setColorR(color.redF());
-    Scene::getInstance()->lighting->dirLight.setColorG(color.greenF());
-    Scene::getInstance()->lighting->dirLight.setColorB(color.blueF());
-    GlobalSettings::getInstance()->setLightColorR(color.redF() * 100);
-    GlobalSettings::getInstance()->setLightColorG(color.greenF() * 100);
-    GlobalSettings::getInstance()->setLightColorB(color.blueF() * 100);
+
+    if (color.isValid())
+    {
+        Scene::getInstance()->lighting->dirLight.setColorR(color.redF());
+        Scene::getInstance()->lighting->dirLight.setColorG(color.greenF());
+        Scene::getInstance()->lighting->dirLight.setColorB(color.blueF());
+        GlobalSettings::getInstance()->setLightColorR(color.redF() * 100);
+        GlobalSettings::getInstance()->setLightColorG(color.greenF() * 100);
+        GlobalSettings::getInstance()->setLightColorB(color.blueF() * 100);
+    }
 }
 
 Settings::~Settings()
@@ -315,6 +319,9 @@ void Settings::resetSettings()
     ui->changeSkybox->setCurrentIndex(0);
 
     ui->diffuse->setValue(100);
+
+    ui->maxHeight->setValue(64);
+    ui->minHeight->setValue(56);
 
 
 

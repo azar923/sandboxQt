@@ -11,7 +11,6 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     openni::OpenNI::enumerateDevices(&list);
     deviceURI = openni::ANY_DEVICE;
 
-    qDebug() << "DEVICE NAME: " << list[0].getName();
     width = _width;
     height = _height;
     history_capacity = 10;
@@ -79,17 +78,59 @@ bool InputStream::isSensorConnected()
         qDebug() << "No sensors found";
         openni::OpenNI::shutdown();
         return false;
-
     }
+
     else
     {
         qDebug() << "Sensor is found";
+
+
         openni::OpenNI::shutdown();
         return true;
+    }
+}
+
+int InputStream::getConnectedSensorType()
+{
+    openni::Status status = openni::OpenNI::initialize();
+    openni::Array<openni::DeviceInfo> list;
+    openni::OpenNI::enumerateDevices(&list);
+    openni::Device dev;
+    int deviceType = -1;
+
+    if (list.getSize() > 0)
+    {
+
+        dev.open(list[0].getUri());
+        const openni::SensorInfo* info = dev.getSensorInfo(openni::SENSOR_DEPTH);
+        const openni::Array< openni::VideoMode>& modesDepth = info->getSupportedVideoModes();
+
+        if (modesDepth[0].getResolutionX() == 512)
+        {
+            qDebug() << "You connected Kinect v2";
+            deviceType = 1;
+        }
+        else
+        {
+            qDebug() << "You connected Kinect v1";
+            deviceType = 0;
+        }
+        dev.close();
+        openni::OpenNI::shutdown();
+
+        return deviceType;
+    }
+
+    else
+    {
+        openni::OpenNI::shutdown();
+        return deviceType;
     }
 
 
 }
+
+
 
 void InputStream::initialize()
 {

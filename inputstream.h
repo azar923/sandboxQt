@@ -22,12 +22,14 @@ public:
     void setMinDepth(int minDepth);
     void setHorisontalFlip(bool _toFlipHorisontally);
     void setVerticalFlip(bool _toFlipVertically);
-   cv::Mat img_depth;
+    static int getConnectedSensorType();
+    cv::Mat img_depth;
     Mat getRawMat();
    void Terminate();
     ~InputStream();
 private:
 
+    static int sensorType;
     openni::Status rc_depth ;
     openni::Device device;
     openni::VideoStream depth;

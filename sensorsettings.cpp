@@ -15,15 +15,15 @@ SensorSettings::SensorSettings(QWidget *parent) :
     width = GlobalSettings::getInstance()->getWidth();
     height = GlobalSettings::getInstance()->getHeight();
 
-    if (width == 320)
-    {
-        x = 310;
-        y = 220;
-    }
-
-    else
+    if (width == 640)
     {
         x = 190;
+        y = 80;
+    }
+
+    else if (width == 512)
+    {
+        x = 230;
         y = 80;
     }
 
@@ -31,7 +31,7 @@ SensorSettings::SensorSettings(QWidget *parent) :
     connect(ui->next, SIGNAL(pressed()), this, SLOT(next()));
     connect(ui->finish, SIGNAL(pressed()), this, SLOT(close()));
 
-    connect(ui->resolution, SIGNAL(currentIndexChanged(int)), this, SLOT(setResolution(int)));
+
 
     isCroppingSetUp = false;
 
@@ -50,6 +50,24 @@ SensorSettings::SensorSettings(QWidget *parent) :
     ui->cancel->setAutoDefault(false);
     ui->finish->setAutoDefault(false);
     ui->next->setAutoDefault(false);
+
+    int deviceType = GlobalSettings::getInstance()->getSensorType();
+
+    if (deviceType == 1)
+    {
+        qDebug() << "We are here and we connected Kinect v2";
+        ui->resolution->addItem("512 x 424 (for Kinect v2)");
+
+    }
+
+    else
+    {
+        qDebug() << "We are here and we connected Kinect v2";
+        ui->resolution->addItem("512 x 424 (for Kinect v2)");
+
+    }
+
+    connect(ui->resolution, SIGNAL(currentIndexChanged(int)), this, SLOT(setResolution(int)));
 }
 
 void SensorSettings::quit()
@@ -85,7 +103,7 @@ void SensorSettings::setCropping()
 
     ui->finish->setVisible(true);
     GlobalSettings::getInstance()->setSensorMode(true);
-
+    GlobalSettings::getInstance()->setFirstTime(false);
 }
 
 SensorSettings::~SensorSettings()
@@ -116,27 +134,5 @@ void SensorSettings::next()
 
 void SensorSettings::setResolution(int option)
 {
-    if (option == 1)
-    {
-        width = 512;
-        height = 424;
-        x = 230;
-        y = 80;
 
-        GlobalSettings::getInstance()->setWidth(width);
-        GlobalSettings::getInstance()->setHeight(height);
-    }
-
-  /*  else
-    {
-        width = 320;
-        height = 240;
-        x = 310;
-        y = 220;
-
-        qDebug() << "res = 320";
-
-        GlobalSettings::getInstance()->setWidth(width);
-        GlobalSettings::getInstance()->setHeight(height);
-    }*/
 }

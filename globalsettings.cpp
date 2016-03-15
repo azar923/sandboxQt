@@ -59,6 +59,7 @@ void GlobalSettings::setConfigFile(const QString filePath)
     contrast = settings.at(24);
 
     sensorMode = false;
+    sensorType = -1;
 }
 
 bool GlobalSettings::getSensorMode()
@@ -144,6 +145,11 @@ int GlobalSettings::getLightIntensity()
 int GlobalSettings::getContrast()
 {
     return contrast;
+}
+
+int GlobalSettings::getSensorType()
+{
+    return sensorType;
 }
 
 
@@ -338,6 +344,10 @@ void GlobalSettings::setContrast(int _contrast)
     contrast = _contrast;
 }
 
+void GlobalSettings::setSensorType(int _sensorType)
+{
+    sensorType = _sensorType;
+}
 
 
 int GlobalSettings::getMinHeight()

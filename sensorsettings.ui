@@ -58,25 +58,15 @@
   <widget class="QComboBox" name="resolution">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>330</x>
      <y>230</y>
-     <width>181</width>
+     <width>201</width>
      <height>31</height>
     </rect>
    </property>
    <item>
     <property name="text">
      <string/>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>512x424 (for Kinect v2)</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>640x480 (for Kinect v1)</string>
     </property>
    </item>
   </widget>

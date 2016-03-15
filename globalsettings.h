@@ -34,6 +34,7 @@ public:
     int getLightIntensity();
     bool getSensorMode();
     int getContrast();
+    int getSensorType();
 
     void setFirstTime(bool isFirstTime);
     void setWidth(int _width);
@@ -61,6 +62,7 @@ public:
     void setLightIntensity(int _lightIntensity);
     void setSensorMode(bool isSensorMode);
     void setContrast(int _contrast);
+    void setSensorType(int _sensorType);
 
     static GlobalSettings* getInstance() {
         if (singleton == 0)
@@ -98,6 +100,7 @@ private:
     int lightIntensity;//23
     int contrast; // 24
     bool sensorMode;
+    int sensorType;
 
     static GlobalSettings* singleton;
 

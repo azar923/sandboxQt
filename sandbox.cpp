@@ -40,17 +40,7 @@ Sandbox::Sandbox(QWidget *parent) :
 
     isRolledUp = false;
 
-    if (!GlobalSettings::getInstance()->getSensorMode())
-    {
-        QMessageBox* box = new QMessageBox(this);
-        box->setText("There is no sensor connected. Please, connect depth sensor and try to start program again");
-        box->setWindowTitle("No sensor connected");
-        box->show();
-    }
-
     showFullScreen();
-
-    //Add resize according to window screen
 }
 
 Sandbox::~Sandbox()
@@ -83,6 +73,7 @@ void Sandbox::mode()
 
 void Sandbox::start()
 {
+
     ui->start->setVisible(false);
     ui->exit->setVisible(false);
     ui->mode->setVisible(false);
@@ -111,7 +102,7 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
     Qt::Key key = static_cast<Qt::Key>(keyInt);
     if (key == Qt::Key_Escape)
     {
-        if (inGameMode)
+        if (inGameMode && !isRolledUp)
         {
 
             ui->start->setVisible(true);
@@ -124,6 +115,29 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
             ui->widget->resize(this->width(), this->height());
             ui->widget->move(this->x(), this->y());
             inGameMode = false;
+        }
+
+        else if (inGameMode && isRolledUp)
+        {
+            showNormal();
+            Scene::getInstance()->terrain->setSandboxMode();
+            ui->start->setVisible(true);
+            ui->exit->setVisible(true);
+            ui->mode->setVisible(true);
+            ui->settings->setVisible(true);
+            this->resize(this->width() / 2, this->height() / 2);
+            ui->widget->resize(this->width(), this->height());
+            ui->widget->move(this->x(), this->y());
+            Scene::getInstance()->setWindowSize(this->width(), this->height());
+            Scene::getInstance()->camera->setWindowSize(this->width(),this->height());
+
+            ui->exit->move(this->width() * 0.1, this->height() * 0.8);
+            ui->settings->move(this->width() * 0.3, this->height() * 0.6);
+            ui->mode->move(this->width() * 0.45, this->height() * 0.6);
+            ui->start->move(this->width() * 0.5, this->height() * 0.6);
+
+            isRolledUp = true;
+
         }
 
         else
@@ -151,7 +165,7 @@ void Sandbox::keyPressEvent(QKeyEvent *event)
 
             isRolledUp = true;
 
-            ui->start->hide();
+          //  ui->start->hide();
 
         }
 
