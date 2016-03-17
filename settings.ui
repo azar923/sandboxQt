@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>6</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="Display">
     <attribute name="title">
@@ -245,6 +245,19 @@
      </property>
      <property name="text">
       <string>Please, connect depth sensor to get access to these settings</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="reconfigure">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>260</y>
+       <width>141</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Reconfigure sensor</string>
      </property>
     </widget>
    </widget>
@@ -899,19 +912,6 @@
      </property>
      <property name="text">
       <string>Reset to default</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="reconfigure">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>170</y>
-       <width>141</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Reconfigure sensor</string>
      </property>
     </widget>
    </widget>

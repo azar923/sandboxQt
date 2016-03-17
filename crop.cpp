@@ -38,10 +38,10 @@ void Crop::quit()
 
 void Crop::setDefaultCropping()
 {
-    offsetLeft = 50;
-    offsetRight = 50;
-    offsetTop = 50;
-    offsetBottom = 50;
+    offsetLeft = 93;
+    offsetRight = 88;
+    offsetTop = 114;
+    offsetBottom = 117;
     ui->left->setText(QString::number(offsetLeft));
     ui->right->setText(QString::number(offsetRight));
     ui->top->setText(QString::number(offsetTop));

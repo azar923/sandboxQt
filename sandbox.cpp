@@ -21,7 +21,7 @@ Sandbox::Sandbox(QWidget *parent) :
     connect(ui->mode, SIGNAL(pressed()), this, SLOT(mode()));
     connect(ui->settings, SIGNAL(pressed()), this, SLOT(openSettings()));
 
-    renderTimer->start(0);
+    renderTimer->start(20);
 
     ui->start->setAutoDefault(false);
     ui->mode->setAutoDefault(false);

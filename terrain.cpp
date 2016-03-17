@@ -2,6 +2,7 @@
 #include <iostream>
 #include <time.h>
 #include "globalsettings.h"
+#include <QMessageBox>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ void Terrain::setup()
 
     initializeOpenGLFunctions();
 
-    bool isSensorConnected = InputStream::isSensorConnected();
+    bool isSensorConnected = GlobalSettings::getInstance()->getSensorMode();
 
     if (isSensorConnected)
     {
@@ -78,6 +79,8 @@ void Terrain::setup()
     setUniforms();
 
     cout << "Terrain was created" << endl;
+
+    setHeight(stream->getData());
 }
 
 void Terrain::setWaterMax(int _waterMax)
@@ -351,6 +354,7 @@ void Terrain::render(Pipeline* p, Camera* c, Lighting* l, int WINDOW_WIDTH, int 
 {
 
     setHeight(stream->getData());
+
 
     timer = clock();
     glEnable(GL_BLEND);

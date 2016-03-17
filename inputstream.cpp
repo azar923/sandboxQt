@@ -1,6 +1,9 @@
 #include "inputstream.h"
 #include <QDebug>
 #include "globalsettings.h"
+#include <QMessageBox>
+#include <QErrorMessage>
+#include <QDialog>
 
 #define MAXDEPTH 255
 
@@ -24,7 +27,7 @@ InputStream::InputStream(int _width, int _height, int _min_depth, int _max_depth
     min_depth = _min_depth;
     max_depth = _max_depth;
     current = 0;
-    frame = new VideoFrameRef;
+
 
     toFlipVertically = GlobalSettings::getInstance()->getFlipVertical();
     toFlipHorisontally = GlobalSettings::getInstance()->getFlipHorisontal();
@@ -83,7 +86,6 @@ bool InputStream::isSensorConnected()
     else
     {
         qDebug() << "Sensor is found";
-
 
         openni::OpenNI::shutdown();
         return true;
@@ -156,9 +158,12 @@ void InputStream::setMinDepth(int minDepth)
     min_depth = minDepth;
 }
 
-void InputStream::filterStatistic(int data_delta)
+bool InputStream::filterStatistic(int data_delta)
 {
-    GetDepthData(raw, width * height, min_depth, max_depth);
+    bool isData = GetDepthData(raw, width * height, min_depth, max_depth);
+
+    if (!isData)
+        return false;
 
 
     for (int i = 0; i < width * height; i++)
@@ -186,11 +191,16 @@ void InputStream::filterStatistic(int data_delta)
         current = 0;
      }
 
+    return true;
+
 }
 
-void InputStream::filterData()
+bool InputStream::filterData()
 {
-    filterStatistic(1);
+    bool isData = filterStatistic(1);
+
+    if (!isData)
+        return false;
 
     for (int y = 0; y < img_depth.rows; y++)
         for (int x = 0; x < img_depth.cols; x++)
@@ -229,29 +239,59 @@ void InputStream::filterData()
         filtered_data[y * img.cols + x] = (unsigned char)img.at<uchar>(Point(x,y));
     }
 
+    return true;
+
 }
 
 
 unsigned char* InputStream::getData()
 {
-    filterData();
-    return filtered_data;
+    bool isData = filterData();
+
+    if (!isData)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","There is an error occured with depth sensor. Please, try to run this program again");
+        messageBox.setFixedSize(500,200);
+        return NULL;
+    }
+    else
+        return filtered_data;
 }
 
 
-void InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth)
+bool InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth)
 {
+    int changedStreamDummy;
+    VideoStream* pStream = &depth;
+    rc_depth = OpenNI::waitForAnyStream(&pStream, 1, &changedStreamDummy, 1000);
 
+    if (rc_depth != STATUS_OK)
+    {
+        printf("Wait failed! (timeout is %d ms)\n%s\n", 1000, OpenNI::getExtendedError());
+
+
+        return false;
+    }
 
     unsigned short data = 0;
-    VideoFrameRef r;
 
-    openni::Status status = depth.readFrame(&r);
+    frame = new VideoFrameRef;
+
+    rc_depth = depth.readFrame(frame);
+
+    if (rc_depth != STATUS_OK)
+    {
+        printf("Read failed!\n%s\n", OpenNI::getExtendedError());
+        return false;
+    }
 
     int min_depth = _min_depth;
     int max_depth = _max_depth;
 
-    openni::DepthPixel* pDepth = (openni::DepthPixel*)r.getData();
+    openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
+
+    delete frame;
 
     for (int i = 0; i < size; i++)
     {
@@ -261,26 +301,34 @@ void InputStream::GetDepthData(uint16_t* dst, int size, int _min_depth, int _max
         if (data < min_depth) data = min_depth;
         dst[i] = (unsigned char)((float)(data - min_depth) / (max_depth - min_depth) * MAXDEPTH);
     }
+
+    return true;
 }
 
 
 Mat InputStream::getRawMat()
 {
+
+    int changedStreamDummy;
+    VideoStream* pStream = &depth;
+    rc_depth = OpenNI::waitForAnyStream(&pStream, 1, &changedStreamDummy, 1000);
+
+    if (rc_depth != STATUS_OK)
+    {
+        printf("Wait failed! (timeout is %d ms)\n%s\n", 1000, OpenNI::getExtendedError());
+
+        exit(0);
+    }
+
     unsigned short data = 0;
+
+    frame = new VideoFrameRef;
     rc_depth = depth.readFrame(frame);
 
     int j = 0;
 
-
     openni::DepthPixel* pDepth = (openni::DepthPixel*)frame->getData();
-    for (int i = 0; i < width * height; i++)
-    {
-        data = pDepth[i];
-        raw[i] = data;
-        j++;
-    }
-
-    qDebug() << "J : " << j;
+    delete frame;
 
     uint16_t max = 0;
 
@@ -294,7 +342,6 @@ Mat InputStream::getRawMat()
         for (int x = 0; x < raw_mat.cols; x++)
         {
             raw_mat.at<Vec3b>(Point(x,y)) = Vec3b(0, 0, uchar((float)raw[y * raw_mat.cols + x] * 255.0 / (float)max));
-
         }
 
     return raw_mat;
@@ -303,6 +350,7 @@ Mat InputStream::getRawMat()
 
 void InputStream::Terminate()
 {
+    depth.stop();
     depth.destroy();
     device.close();
     openni::OpenNI::shutdown();

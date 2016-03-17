@@ -39,6 +39,7 @@ void WaitForSensor::next()
         sandbox->show();
         this->setVisible(false);
         isSandboxCreated = true;
+        timer->stop();
     }
 
 }

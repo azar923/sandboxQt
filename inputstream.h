@@ -45,15 +45,15 @@ private:
     unsigned char* filtered_data;
     unsigned char* cropped_data;
 
-    void filterStatistic(int data_delta);
+    bool filterStatistic(int data_delta);
 
-    void GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth);
+    bool GetDepthData(uint16_t* dst, int size, int _min_depth, int _max_depth);
 
 
     bool toFlipVertically;
     bool toFlipHorisontally;
 
-    void filterData();
+    bool filterData();
 
 
     int width;
